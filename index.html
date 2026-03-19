@@ -3588,8 +3588,11 @@ function toggleSFX() {
 let currentBGMScene = 'terrarium';
 
 window.addEventListener('beforeunload',(e)=>{
+  if(!_splashDismissed)return;
   saveGame();
-  if(fbAuth.currentUser){cloudSave();e.returnValue='';}
+  if(fbAuth.currentUser)cloudSave();
+  e.preventDefault();
+  e.returnValue='確定要離開嗎？';
 });
 
 let _splashDismissed=false;
