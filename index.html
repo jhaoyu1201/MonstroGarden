@@ -509,19 +509,23 @@ function getSpritePath(sp, stage, blink, hurt, attacking) {
     if(f) return dir+f;
     // 沒有 hurt 圖就 fallthrough 到一般圖
   }
-  // 閉眼圖：自身 → 進化鏈物種的閉眼圖
+  // 閉眼圖：自身 → 進化鏈物種的閉眼圖 → fallback 到 blink
   if(blink){
     const blinkKey=stage===0?'blink':stage===1?'blinkEvo1':'blinkEvo2';
     const f=sf(sp,blinkKey)
+      ||(stage===1?sf(sp,'blink'):null)
       ||(stage===1?sf(getEvoSpecies(sp,1),'blink'):null)
+      ||(stage===2?sf(sp,'blink'):null)
       ||(stage===2?sf(getEvoSpecies(sp,2),'blink')||sf(getEvoSpecies(sp,1),'blinkEvo1'):null);
     if(f) return dir+f;
     // 無閉眼圖 → fallthrough 到待機圖
   }
-  // 待機/進化圖：自身 → 進化鏈物種
+  // 待機/進化圖：自身 → 進化鏈物種 → fallback 到 idle
   const key=stage===0?'idle':stage===1?'evo1':'evo2';
   const file=sf(sp,key)
+    ||(stage===1?sf(sp,'idle'):null)
     ||(stage===1?sf(getEvoSpecies(sp,1),'idle'):null)
+    ||(stage===2?sf(sp,'idle'):null)
     ||(stage===2?sf(getEvoSpecies(sp,2),'idle')||sf(getEvoSpecies(sp,1),'evo1')||sf(getEvoSpecies(sp,1),'idle'):null);
   return file?dir+file:null;
 }
