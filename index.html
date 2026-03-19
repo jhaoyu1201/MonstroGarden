@@ -486,7 +486,7 @@ function getEvoSpecies(sp, steps){
   return cur;
 }
 // 自動命名規則：mon_XX_suffix.png（XX = 零補齊編號）
-const SPRITE_KEY_SUFFIX={idle:'idle',evo1:'evo1',evo2:'evo2',blink:'blink',blinkEvo1:'blink_evo1',blinkEvo2:'blink_evo2',attack:'attack',hurt:'hurt'};
+const SPRITE_KEY_SUFFIX={idle:'idle',blink:'blink',attack:'attack',hurt:'hurt'};
 function autoSpriteName(sp,k){
   const suffix=SPRITE_KEY_SUFFIX[k];if(!suffix)return null;
   return`mon_${String(sp.id).padStart(2,'0')}_${suffix}.png`;
@@ -497,45 +497,18 @@ function sf(s,k){ return(s&&s.sprites&&s.sprites[k])||autoSpriteName(s,k)||null;
 function getSpritePath(sp, stage, blink, hurt, attacking) {
   if(!sp) return null;
   const dir = ASSET_CONFIG.monsterDir||'assets/monsters/';
-
-  // 攻擊動作：最高優先
-  if(attacking){
-    const f=sf(sp,'attack');
-    if(f) return dir+f;
-  }
-  // 失落/受傷狀態：優先使用 hurt 圖
-  if(hurt){
-    const f=sf(sp,'hurt');
-    if(f) return dir+f;
-    // 沒有 hurt 圖就 fallthrough 到一般圖
-  }
-  // 閉眼圖：自身 → 進化鏈物種的閉眼圖 → fallback 到 blink
-  if(blink){
-    const blinkKey=stage===0?'blink':stage===1?'blinkEvo1':'blinkEvo2';
-    const f=sf(sp,blinkKey)
-      ||(stage===1?sf(sp,'blink'):null)
-      ||(stage===1?sf(getEvoSpecies(sp,1),'blink'):null)
-      ||(stage===2?sf(sp,'blink'):null)
-      ||(stage===2?sf(getEvoSpecies(sp,2),'blink')||sf(getEvoSpecies(sp,1),'blinkEvo1'):null);
-    if(f) return dir+f;
-    // 無閉眼圖 → fallthrough 到待機圖
-  }
-  // 待機/進化圖：自身 → 進化鏈物種 → fallback 到 idle
-  const key=stage===0?'idle':stage===1?'evo1':'evo2';
-  const file=sf(sp,key)
-    ||(stage===1?sf(sp,'idle'):null)
-    ||(stage===1?sf(getEvoSpecies(sp,1),'idle'):null)
-    ||(stage===2?sf(sp,'idle'):null)
-    ||(stage===2?sf(getEvoSpecies(sp,2),'idle')||sf(getEvoSpecies(sp,1),'evo1')||sf(getEvoSpecies(sp,1),'idle'):null);
-  return file?dir+file:null;
+  // 每隻物種只使用自身圖片，stage 僅供外部呼叫保持簽名相容
+  if(attacking){ const f=sf(sp,'attack'); if(f) return dir+f; }
+  if(hurt){ const f=sf(sp,'hurt'); if(f) return dir+f; }
+  if(blink){ const f=sf(sp,'blink'); if(f) return dir+f; }
+  const f=sf(sp,'idle');
+  return f?dir+f:null;
 }
-// 取得色違專屬圖路徑（命名規則：mon_XX_idle_shiny.png / evo1_shiny / evo2_shiny）
-function getShinySpritePath(sp,stage){
+// 取得色違專屬圖路徑（命名規則：mon_XX_idle_shiny.png）
+function getShinySpritePath(sp){
   if(!sp)return null;
   const dir=ASSET_CONFIG.monsterDir||'assets/monsters/';
-  const base=stage===0?'idle':stage===1?'evo1':'evo2';
-  const key=base+'Shiny';
-  const file=(sp.sprites&&sp.sprites[key])||`mon_${String(sp.id).padStart(2,'0')}_${base}_shiny.png`;
+  const file=(sp.sprites&&sp.sprites['idleShiny'])||`mon_${String(sp.id).padStart(2,'0')}_idle_shiny.png`;
   return dir+file;
 }
 // Preload a monster's sprites（含進化鏈）
@@ -657,7 +630,7 @@ function drawMonsterOnCanvas(ctx,m,x,y,scale,blink,mood,flipX){
     const drawPath=(spritePath&&IMG_CACHE[spritePath])?spritePath:spritePathIdle;
     const sz=s*2;
     // 色違圖檢查
-    const shinyPath=isShiny?getShinySpritePath(sp,stage):null;
+    const shinyPath=isShiny?getShinySpritePath(sp):null;
     if(shinyPath&&IMG_CACHE[shinyPath]===undefined)loadImg(shinyPath,()=>{});
     const useShinySprite=isShiny&&shinyPath&&IMG_CACHE[shinyPath];
     ctx.save();
@@ -1847,7 +1820,7 @@ function drawMiniMonsterFull(m,canvas){
   if(spritePath){
     if(m.isShiny){
       // 先嘗試載入專屬色違圖
-      const shinyPath=getShinySpritePath(sp,stage);
+      const shinyPath=getShinySpritePath(sp);
       loadImg(shinyPath,(shinyImg)=>{
         if(shinyImg){
           canvas.style.filter=''; // 有色違圖：直接用，不加濾鏡
@@ -3091,8 +3064,6 @@ function openDexDetail(spId){
       stages.forEach((stage,i)=>{
         const wrap=document.createElement('div');
         wrap.style.cssText=`text-align:center;background:var(--card);border-radius:10px;padding:8px 10px;border:1.5px solid ${stage.unlocked?'var(--teal)':'var(--card2)'};flex:1;min-width:80px;position:relative;`;
-        // stage label
-        const stageLabels=['基礎形態','進化一階','最終進化'];
         const lvLabels=['Lv.1','Lv.10','Lv.20'];
         // Canvas
         const can=document.createElement('canvas');can.width=80;can.height=80;
