@@ -579,18 +579,24 @@ function refreshSpPreview(id){
     const can=document.createElement('canvas');can.width=80;can.height=80;
     const fakeMon={speciesId:sp.id,isShiny:false,size:1.0,level:lv||1};
     const ctx=can.getContext('2d');ctx.clearRect(0,0,80,80);
-    // Check for sprite
+    // Check for sprite — explicit → auto-name → idle fallback
     const stage=i;const spr=sp.sprites||{};
+    const pad=String(sp.id).padStart(2,'0');
     const skey=stage===0?'idle':stage===1?'evo1':'evo2';
-    const spritePath=spr[skey]?'assets/monsters/'+spr[skey]:null;
-    if(spritePath){
+    const suffix={idle:'idle',evo1:'evo1',evo2:'evo2'}[skey];
+    const candidates=[
+      spr[skey]?'assets/monsters/'+spr[skey]:null,
+      `assets/monsters/mon_${pad}_${suffix}.png`,
+      stage>0?(spr['idle']?'assets/monsters/'+spr['idle']:`assets/monsters/mon_${pad}_idle.png`):null,
+    ].filter(Boolean);
+    const tryLoad=(list)=>{
+      if(!list.length){try{drawMonsterOnCanvas(ctx,fakeMon,40,46,1.0,false,'happy');}catch(e){}return;}
       const img=new Image();
       img.onload=()=>{const sc=Math.min(80/img.width,80/img.height)*0.88;const dw=img.width*sc,dh=img.height*sc;ctx.drawImage(img,(80-dw)/2,(80-dh)/2,dw,dh);};
-      img.onerror=()=>{try{drawMonsterOnCanvas(ctx,fakeMon,40,46,1.0,false,'happy');}catch(e){}};
-      img.src=spritePath;
-    } else {
-      try{drawMonsterOnCanvas(ctx,fakeMon,40,46,1.0,false,'happy');}catch(e){}
-    }
+      img.onerror=()=>tryLoad(list.slice(1));
+      img.src=list[0];
+    };
+    tryLoad(candidates);
     div.appendChild(can);
     const lbl=document.createElement('p');lbl.textContent=['基礎','進化I','進化II'][i];div.appendChild(lbl);
     wrap.appendChild(div);
