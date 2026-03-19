@@ -2115,8 +2115,8 @@ function openMonsterDetail(m){
     })()}
   </div>
   <div style="margin-bottom:12px;">
-    <div style="display:flex;justify-content:space-between;font-size:.75rem;color:var(--text2);margin-bottom:3px;"><span>EXP ${m.level>=30?'(MAX)':''}</span><span>${m.level>=30?'MAX':expPct+'%'}</span></div>
-    <div class="stat-bar-bg"><div class="stat-bar" style="width:${expPct}%;background:linear-gradient(90deg,var(--teal),#4a9eff);"></div></div>
+    <div id="md-exp-label" style="display:flex;justify-content:space-between;font-size:.75rem;color:var(--text2);margin-bottom:3px;"><span>EXP ${m.level>=30?'(MAX)':''}</span><span>${m.level>=30?'MAX':expPct+'%'}</span></div>
+    <div class="stat-bar-bg"><div id="md-exp-bar" class="stat-bar" style="width:${expPct}%;background:linear-gradient(90deg,var(--teal),#4a9eff);"></div></div>
   </div>
   ${isCD?`<div style="background:#2a1020;border:1px solid #ff4757;border-radius:8px;padding:8px 12px;font-size:.8rem;color:#ff6b9d;margin-bottom:12px;">😔 心情低落...剩 ${Math.floor(cdLeft/60)}分${cdLeft%60}秒</div>`:''}
   ${m.glowDNA?`<div style="background:rgba(0,212,184,0.07);border:1px solid rgba(0,212,184,0.25);border-radius:8px;padding:8px 12px;margin-bottom:12px;display:flex;align-items:center;gap:8px;"><span style="color:var(--gold);font-weight:800;font-size:.9rem;">🌟 ${m.bondTitle}</span></div>`:''}
@@ -2127,10 +2127,34 @@ function openMonsterDetail(m){
     <button class="btn btn-secondary" onclick="feedMonster(${m.uid})">餵食 ${getIconHtml(ASSET_CONFIG.uiDir+'item_food.png','🍬',16,16)}</button>
   </div>`;
   showModal(m.nickname||m.name,html,()=>{const w=document.getElementById('dcw');if(w)w.appendChild(can);});
+  document.getElementById('modal-box').dataset.uid=m.uid;
 }
 
 function openNickname(uid){const m=G.monsters.find(x=>x.uid===uid);const n=prompt('輸入暱稱：',m.nickname||'');if(n!==null){m.nickname=n.trim();closeModal();notify('📝 改名成功！','teal');refreshCurrentPage();}}
-function feedMonster(uid){if(G.inventory.food<=0){notify('沒有食物！🛒','warn');SFX.click();return;}const m=G.monsters.find(x=>x.uid===uid);G.inventory.food--;m.hunger=Math.min(100,m.hunger+30);updateInventoryChips();const foodExpGain=(SHOP_CONFIG.find(x=>x.id==='food')||{expGain:50}).expGain||50;const lv=addExp(m,foodExpGain);if(lv){SFX.levelUp();notify(`🎉 ${m.nickname||m.name} 升到Lv.${m.level}！`,'teal');}else{SFX.feed();notify(`🍬 ${m.nickname||m.name} +${foodExpGain} EXP`,'teal');}refreshCurrentPage();saveGame();openMonsterDetail(m);}
+function feedMonster(uid){
+  if(G.inventory.food<=0){notify('沒有食物！🛒','warn');SFX.click();return;}
+  const m=G.monsters.find(x=>x.uid===uid);
+  G.inventory.food--;m.hunger=Math.min(100,m.hunger+30);
+  updateInventoryChips();
+  const foodExpGain=(SHOP_CONFIG.find(x=>x.id==='food')||{expGain:50}).expGain||50;
+  const lv=addExp(m,foodExpGain);
+  if(lv){
+    SFX.levelUp();notify(`🎉 ${m.nickname||m.name} 升到Lv.${m.level}！`,'teal');
+    saveGame();refreshCurrentPage();openMonsterDetail(m); // 升級需完整刷新
+  }else{
+    SFX.feed();notify(`🍬 ${m.nickname||m.name} +${foodExpGain} EXP`,'teal');
+    saveGame();refreshCurrentPage();
+    // 只更新 EXP 條，不重建 Modal（避免圖片閃爍）
+    const box=document.getElementById('modal-box');
+    if(box&&parseInt(box.dataset.uid)===uid){
+      const expPct=m.level>=30?100:Math.round((m.exp-EXP_TABLE[m.level])/(EXP_TABLE[m.level+1]-EXP_TABLE[m.level])*100);
+      const bar=document.getElementById('md-exp-bar');
+      const lbl=document.getElementById('md-exp-label');
+      if(bar)bar.style.width=expPct+'%';
+      if(lbl)lbl.children[1].textContent=expPct+'%';
+    }else{openMonsterDetail(m);}
+  }
+}
 function feedAll(){if(G.inventory.food<=0){notify('沒有食物了！','warn');SFX.click();return;}let fed=0;G.terrarium.forEach(uid=>{if(G.inventory.food>0){const m=G.monsters.find(x=>x.uid===uid);if(m){G.inventory.food--;m.hunger=Math.min(100,m.hunger+25);const feg=(SHOP_CONFIG.find(x=>x.id==='food')||{expGain:50}).expGain||50;addExp(m,Math.round(feg*0.8));fed++;}}});SFX.feed();notify(`🍬 餵食了 ${fed} 隻！`,'teal');updateInventoryChips();refreshCurrentPage();saveGame();}
 function addToTerrarium(uid){if(G.terrarium.length>=5){notify('飼養箱已滿！','warn');return;}if(!G.terrarium.includes(uid)){G.terrarium.push(uid);initTerrariumObjs();updateTerrariumUI();}closeModal();notify('✅ 放入飼養箱','teal');saveGame();}
 function removeFromTerrarium(uid){G.terrarium=G.terrarium.filter(x=>x!==uid);initTerrariumObjs();updateTerrariumUI();closeModal();notify('📦 移回倉庫','teal');saveGame();}
