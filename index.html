@@ -504,13 +504,14 @@ function getSpritePath(sp, stage, blink, hurt, attacking) {
   const f=sf(sp,'idle');
   return f?dir+f:null;
 }
-// 取得色違專屬圖路徑（variant: 1→_shiny.png, 2→_shiny2.png, 3→_shiny3.png）
-function getShinySpritePath(sp,variant){
+// 取得色違專屬圖路徑（variant: 1→_shiny, 2→_shiny2, 3→_shiny3；action: idle/blink/attack/hurt）
+function getShinySpritePath(sp,variant,action){
   if(!sp)return null;
   const dir=ASSET_CONFIG.monsterDir||'assets/monsters/';
   const v=variant||1;
   const suffix=v===1?'_shiny':`_shiny${v}`;
-  const file=`mon_${String(sp.id).padStart(2,'0')}_idle${suffix}.png`;
+  const act=action||'idle';
+  const file=`mon_${String(sp.id).padStart(2,'0')}_${act}${suffix}.png`;
   return dir+file;
 }
 // Preload a monster's sprites（含進化鏈）
@@ -631,12 +632,17 @@ function drawMonsterOnCanvas(ctx,m,x,y,scale,blink,mood,flipX){
     // 選擇要繪製的圖：閉眼/hurt 圖（若已載入）或待機圖
     const drawPath=(spritePath&&IMG_CACHE[spritePath])?spritePath:spritePathIdle;
     const sz=s*2;
-    // 色違圖檢查
-    const shinyPath=isShiny?getShinySpritePath(sp,m.shinyVariant):null;
-    const shinyPathFallback=isShiny&&(m.shinyVariant||1)>1?getShinySpritePath(sp,1):null;
-    if(shinyPath&&IMG_CACHE[shinyPath]===undefined)loadImg(shinyPath,()=>{});
-    if(shinyPathFallback&&IMG_CACHE[shinyPathFallback]===undefined)loadImg(shinyPathFallback,()=>{});
-    const resolvedShinyPath=(isShiny&&shinyPath&&IMG_CACHE[shinyPath])?shinyPath:(isShiny&&shinyPathFallback&&IMG_CACHE[shinyPathFallback])?shinyPathFallback:null;
+    // 色違圖檢查（action-aware：action 色違 → idle 色違同 variant → idle 色違 v1 → hue-rotate）
+    const actionKey=blink?'blink':(isHurt?'hurt':'idle');
+    const _sv=m.shinyVariant||1;
+    const shinyActPath =isShiny?getShinySpritePath(sp,_sv,actionKey):null;
+    const shinyIdlePath=isShiny?getShinySpritePath(sp,_sv,'idle'):null;
+    const shinyIdleV1  =(isShiny&&_sv>1)?getShinySpritePath(sp,1,'idle'):null;
+    [shinyActPath,shinyIdlePath,shinyIdleV1].forEach(p=>{if(p&&IMG_CACHE[p]===undefined)loadImg(p,()=>{});});
+    const resolvedShinyPath=
+      (shinyActPath &&IMG_CACHE[shinyActPath]) ?shinyActPath :
+      (shinyIdlePath&&IMG_CACHE[shinyIdlePath])?shinyIdlePath:
+      (shinyIdleV1  &&IMG_CACHE[shinyIdleV1])  ?shinyIdleV1  :null;
     const useShinySprite=!!resolvedShinyPath;
     ctx.save();
     if(flipX)ctx.scale(-1,1);
@@ -2512,15 +2518,30 @@ function drawBattleMonster(ctx,m,x,y,scale,blink,mood,flipX,attacking){
   const isHurt=mood==='depressed';
   const spritePath=sp?getSpritePath(sp,stage,false,isHurt,attacking):null;
   if(spritePath && IMG_CACHE[spritePath]){
-    const img=IMG_CACHE[spritePath];
     const sz=m.size*scale*52;
     const groundOff=m.size*scale*26;
+    // 色違 action-aware sprite 解析
+    const _bAct=attacking?'attack':(isHurt?'hurt':'idle');
+    const _sv=m.shinyVariant||1;
+    const bShinyAct =m.isShiny?getShinySpritePath(sp,_sv,_bAct):null;
+    const bShinyIdle=m.isShiny?getShinySpritePath(sp,_sv,'idle'):null;
+    const bShinyV1  =(m.isShiny&&_sv>1)?getShinySpritePath(sp,1,'idle'):null;
+    [bShinyAct,bShinyIdle,bShinyV1].forEach(p=>{if(p&&IMG_CACHE[p]===undefined)loadImg(p,()=>{});});
+    const resolvedShiny=
+      (bShinyAct &&IMG_CACHE[bShinyAct]) ?bShinyAct :
+      (bShinyIdle&&IMG_CACHE[bShinyIdle])?bShinyIdle:
+      (bShinyV1  &&IMG_CACHE[bShinyV1])  ?bShinyV1  :null;
+    const drawImg=resolvedShiny?IMG_CACHE[resolvedShiny]:IMG_CACHE[spritePath];
     ctx.save();ctx.translate(x,y);
     drawGlowEffect(ctx,m,m.size*scale*26,Date.now());
-    if(flipX) ctx.scale(-1,1); // 玩家隊在左側，朝右翻轉
-    if(m.isShiny){ctx.shadowColor='#ffd700';ctx.shadowBlur=12;}
-    ctx.drawImage(img,-sz/2,-sz+groundOff,sz,sz);
-    ctx.shadowBlur=0;ctx.restore();
+    if(flipX) ctx.scale(-1,1);
+    if(m.isShiny&&!resolvedShiny){
+      const hue=sp.shinyHue??ATTR_SHINY_HUE[sp.attr]??180;
+      if(CTX_FILTER_SUPPORT){ctx.filter=`hue-rotate(${hue}deg) saturate(1.5)`;}
+      else{ctx.shadowColor=`hsl(${hue},90%,60%)`;ctx.shadowBlur=12;}
+    }
+    ctx.drawImage(drawImg,-sz/2,-sz+groundOff,sz,sz);
+    ctx.filter='none';ctx.shadowBlur=0;ctx.restore();
   } else if(spritePath && !IMG_CACHE[spritePath]){
     loadImg(spritePath,()=>{});
     drawMonsterOnCanvas(ctx,m,x,y,scale,blink,mood,flipX);
