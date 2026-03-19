@@ -367,7 +367,8 @@ async function doLogout(){
   if(!confirm('確定登出？將自動同步存檔到雲端。'))return;
   await cloudSave();
   await fbAuth.signOut();
-  notify('🚪 已儲存並登出','teal');
+  _splashDismissed=false;
+  showSplash();
 }
 async function doQuitGame(){
   if(!confirm('確定退出遊戲？將自動儲存進度。'))return;
