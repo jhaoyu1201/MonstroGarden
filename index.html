@@ -2140,10 +2140,10 @@ function feedMonster(uid){
   const lv=addExp(m,foodExpGain);
   if(lv){
     SFX.levelUp();notify(`🎉 ${m.nickname||m.name} 升到Lv.${m.level}！`,'teal');
-    saveGame();refreshCurrentPage();openMonsterDetail(m); // 升級需完整刷新
+    saveGame();updateTerrariumUI();openMonsterDetail(m); // 升級需完整刷新
   }else{
     SFX.feed();notify(`🍬 ${m.nickname||m.name} +${foodExpGain} EXP`,'teal');
-    saveGame();refreshCurrentPage();
+    saveGame();updateTerrariumUI();
     // 只更新 EXP 條，不重建 Modal（避免圖片閃爍）
     const box=document.getElementById('modal-box');
     if(box&&parseInt(box.dataset.uid)===uid){
