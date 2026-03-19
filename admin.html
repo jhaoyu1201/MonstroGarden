@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Monstro Garden — Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Fredoka+One&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0f1117;--bg2:#161b27;--bg3:#1e2a3e;--card:#1a2234;--card2:#232f45;--text:#e8eaf6;--text2:#8892b0;--text3:#4a5568;--teal:#00d4b8;--gold:#ffd700;--pink:#ff6b9d;--green:#4ecb71;--red:#ff4757;--orange:#ff6b35;--purple:#8b5cf6;--radius:12px;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+#login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;}
+.login-box{background:var(--bg2);border:2px solid var(--bg3);border-radius:20px;padding:40px;text-align:center;width:340px;}
+.login-box h1{font-family:'Fredoka One',cursive;font-size:2rem;color:var(--teal);margin-bottom:8px;}
+.login-box p{color:var(--text2);font-size:.9rem;margin-bottom:24px;}
+.login-box input{width:100%;padding:12px 16px;background:var(--bg3);border:1.5px solid var(--card2);border-radius:10px;color:var(--text);font-size:1rem;font-family:'Nunito',sans-serif;margin-bottom:12px;outline:none;}
+.login-box input:focus{border-color:var(--teal);}
+#admin-app{display:none;min-height:100vh;flex-direction:column;}
+#admin-header{background:var(--bg2);border-bottom:2px solid var(--bg3);padding:10px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;gap:12px;}
+#admin-header h1{font-family:'Fredoka One',cursive;font-size:1.4rem;color:var(--teal);white-space:nowrap;}
+#admin-body{display:flex;flex:1;}
+#admin-sidebar{width:210px;background:var(--bg2);border-right:2px solid var(--bg3);padding:12px 0;flex-shrink:0;position:sticky;top:57px;height:calc(100vh - 57px);overflow-y:auto;}
+.side-btn{width:100%;text-align:left;padding:9px 18px;background:none;border:none;color:var(--text2);cursor:pointer;font-family:'Nunito',sans-serif;font-size:.85rem;font-weight:700;display:flex;align-items:center;gap:8px;transition:all .15s;}
+.side-btn:hover{background:var(--bg3);color:var(--text);}
+.side-btn.active{background:var(--bg3);color:var(--teal);border-right:3px solid var(--teal);}
+.side-section{padding:8px 18px 3px;font-size:.68rem;font-weight:800;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-top:6px;}
+#admin-content{flex:1;padding:24px;overflow-y:auto;max-width:1100px;}
+.panel{display:none;}.panel.active{display:block;}
+.panel-title{font-family:'Fredoka One',cursive;font-size:1.4rem;color:var(--teal);margin-bottom:18px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.card{background:var(--card);border-radius:var(--radius);padding:18px;border:1.5px solid var(--card2);margin-bottom:14px;}
+.card-title{font-weight:800;font-size:.95rem;margin-bottom:12px;color:var(--text);display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.form-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px;}
+.form-row{display:flex;flex-direction:column;gap:4px;}
+.form-row label{font-size:.72rem;font-weight:700;color:var(--text2);}
+.form-row input,.form-row select,.form-row textarea{padding:7px 10px;background:var(--bg3);border:1.5px solid var(--card2);border-radius:8px;color:var(--text);font-family:'Nunito',sans-serif;font-size:.88rem;outline:none;width:100%;}
+.form-row input:focus,.form-row select:focus,.form-row textarea:focus{border-color:var(--teal);}
+.form-row input[type=range]{padding:4px 0;cursor:pointer;accent-color:var(--teal);}
+.range-wrap{display:flex;align-items:center;gap:8px;}
+.range-wrap input{flex:1;}
+.range-val{font-size:.82rem;font-weight:800;color:var(--teal);min-width:40px;text-align:right;}
+.btn{padding:8px 18px;border-radius:20px;border:none;font-family:'Nunito',sans-serif;font-weight:800;cursor:pointer;font-size:.85rem;transition:all .15s;}
+.btn-primary{background:linear-gradient(135deg,var(--teal),#4a9eff);color:#fff;}
+.btn-primary:hover{transform:scale(1.03);}
+.btn-danger{background:linear-gradient(135deg,var(--red),var(--pink));color:#fff;}
+.btn-secondary{background:var(--card2);color:var(--text);}
+.btn-secondary:hover{background:var(--bg3);}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--orange));color:#1a1a2e;}
+.btn-sm{padding:5px 12px;font-size:.76rem;}
+.btn-xs{padding:3px 9px;font-size:.7rem;}
+.tabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;}
+.tab{padding:6px 14px;border-radius:20px;border:1.5px solid var(--card2);background:transparent;color:var(--text2);cursor:pointer;font-family:'Nunito',sans-serif;font-weight:700;font-size:.8rem;transition:all .15s;}
+.tab.active{background:var(--bg3);color:var(--teal);border-color:var(--teal);}
+.sp-card{background:var(--bg3);border-radius:10px;border:1.5px solid var(--card2);overflow:hidden;margin-bottom:8px;}
+.sp-header{display:flex;align-items:center;gap:10px;padding:10px 14px;cursor:pointer;user-select:none;}
+.sp-header:hover{background:rgba(255,255,255,0.04);}
+.sp-body{display:none;padding:14px;border-top:1.5px solid var(--card2);}
+.sp-body.open{display:block;}
+.attr-grass{background:#1a3a1a;color:#4ecb71;}
+.attr-fire{background:#3a1a0a;color:#ff6b35;}
+.attr-water{background:#0a1a3a;color:#4a9eff;}
+.attr-electric{background:#3a3a0a;color:#ffd700;}
+.attr-dark{background:#2a1a3a;color:#8b5cf6;}
+.attr-light{background:#3a3a1a;color:#fbbf24;}
+.attr-badge{padding:2px 8px;border-radius:8px;font-size:.68rem;font-weight:800;}
+#toast{position:fixed;bottom:20px;right:20px;z-index:999;display:flex;flex-direction:column;gap:6px;}
+.toast-msg{background:var(--bg2);border:1.5px solid var(--teal);border-radius:10px;padding:9px 16px;font-size:.82rem;font-weight:700;animation:toastIn .2s ease;max-width:260px;}
+.toast-msg.warn{border-color:var(--orange);}
+.toast-msg.danger{border-color:var(--red);}
+@keyframes toastIn{from{transform:translateX(30px);opacity:0}to{transform:translateX(0);opacity:1}}
+.info-box{background:var(--bg3);border-radius:8px;padding:10px 14px;font-size:.8rem;color:var(--text2);line-height:1.7;margin-bottom:14px;border-left:3px solid var(--teal);}
+hr{border:none;border-top:1px solid var(--card2);margin:12px 0;}
+.preview-row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px;}
+.preview-stage{text-align:center;background:rgba(0,0,0,0.3);border-radius:8px;padding:8px;}
+.preview-stage canvas{display:block;margin:0 auto;}
+.preview-stage p{font-size:.68rem;color:var(--teal);margin-top:4px;font-weight:700;}
+.unsaved{color:var(--orange);font-size:.8rem;font-weight:700;}
+.file-hint{font-size:.68rem;color:var(--text3);margin-top:2px;}
+#save-bar{position:fixed;bottom:0;left:0;right:0;background:var(--bg2);border-top:2px solid var(--teal);padding:10px 20px;display:flex;align-items:center;justify-content:space-between;z-index:40;transform:translateY(100%);transition:transform .2s;}
+#save-bar.show{transform:translateY(0);}
+table.data-table{width:100%;border-collapse:collapse;font-size:.82rem;}
+table.data-table th{text-align:left;padding:8px 10px;color:var(--text2);font-size:.72rem;font-weight:700;border-bottom:1.5px solid var(--card2);}
+table.data-table td{padding:8px 10px;border-bottom:1px solid var(--card2);}
+table.data-table tr:last-child td{border-bottom:none;}
+.path-preview{font-size:.7rem;color:var(--teal);background:var(--bg3);padding:3px 8px;border-radius:6px;margin-top:3px;word-break:break-all;}
+</style>
+</head>
+<body>
+<div id="login-screen">
+  <div class="login-box">
+    <h1>⚙️ Admin</h1>
+    <p>Monstro Garden 後台管理系統</p>
+    <input type="password" id="pw-input" placeholder="管理員密碼" onkeydown="if(event.key==='Enter')doLogin()">
+    <button class="btn btn-primary" style="width:100%;margin-top:4px;" onclick="doLogin()">登入</button>
+    <p style="margin-top:10px;font-size:.72rem;color:var(--text3);">預設密碼：admin123</p>
+  </div>
+</div>
+
+<div id="admin-app">
+  <div id="admin-header">
+    <h1>⚙️ Monstro Admin</h1>
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+      <span id="unsaved-dot" class="unsaved" style="display:none;">● 未儲存</span>
+      <button class="btn btn-primary btn-sm" onclick="saveAll()">💾 儲存並套用</button>
+      <button class="btn btn-secondary btn-sm" onclick="exportConfigJson()">📦 匯出 JSON</button>
+      <button class="btn btn-gold btn-sm" onclick="showPanel('export')">📤 匯出 species.js</button>
+      <button class="btn btn-secondary btn-sm" onclick="doLogout()">登出</button>
+    </div>
+  </div>
+  <div id="admin-body">
+    <div id="admin-sidebar">
+      <div class="side-section">怪物</div>
+      <button class="side-btn active" onclick="showPanel('species')" id="sbtn-species">🐾 物種管理</button>
+      <button class="side-btn" onclick="showPanel('battle-config')" id="sbtn-battle-config">⚔️ 戰鬥參數</button>
+      <button class="side-btn" onclick="showPanel('skill-config')" id="sbtn-skill-config">🎯 技能平衡</button>
+      <div class="side-section">商店</div>
+      <button class="side-btn" onclick="showPanel('shop-config')" id="sbtn-shop-config">🛒 道具管理</button>
+      <div class="side-section">資源</div>
+      <button class="side-btn" onclick="showPanel('music-config')" id="sbtn-music-config">🎵 音樂設定</button>
+      <button class="side-btn" onclick="showPanel('sfx-config')" id="sbtn-sfx-config">🔊 音效設定</button>
+      <button class="side-btn" onclick="showPanel('scene-config')" id="sbtn-scene-config">🖼️ 場景圖片</button>
+      <button class="side-btn" onclick="showPanel('ui-config')" id="sbtn-ui-config">🎨 UI 圖片</button>
+      <div class="side-section">系統</div>
+      <button class="side-btn" onclick="showPanel('exp-config')" id="sbtn-exp-config">📈 升級經驗</button>
+      <button class="side-btn" onclick="showPanel('export')" id="sbtn-export">📤 匯出設定</button>
+    </div>
+    <div id="admin-content">
+
+      <!-- ══ 物種管理 ══ -->
+      <div class="panel active" id="panel-species">
+        <div class="panel-title">🐾 物種管理
+          <button class="btn btn-primary btn-sm" onclick="addNewSpecies()">＋ 新增物種</button>
+        </div>
+        <div class="info-box">
+          調整物種數值後「儲存並套用」，遊戲中現有怪物立即重算。<br>
+          <b>圖片欄位</b>：填寫檔名（如 <code>mymon.png</code>），放至 <code>assets/monsters/</code> 資料夾即可。空白則使用程式繪製。
+        </div>
+        <div class="tabs" id="sp-attr-tabs"></div>
+        <div id="species-list"></div>
+      </div>
+
+      <!-- ══ 戰鬥參數 ══ -->
+      <div class="panel" id="panel-battle-config">
+        <div class="panel-title">⚔️ 戰鬥參數</div>
+        <div class="info-box">所有戰鬥計算的全域參數。擊退值現在是各物種獨立設定（在物種管理裡調整）。</div>
+        <div class="card" id="battle-config-form"></div>
+      </div>
+
+      <!-- ══ 商店道具 ══ -->
+      <div class="panel" id="panel-shop-config">
+        <div class="panel-title">🛒 道具管理
+          <button class="btn btn-primary btn-sm" onclick="addShopItem()">＋ 新增道具</button>
+        </div>
+        <div class="info-box">
+          可以新增、編輯、刪除商店道具。<br>
+          <b>effect</b> 識別碼：<code>feed</code>(餵食) · <code>heal</code>(回復) · <code>hatch</code>(孵蛋) · <code>shiny_boost</code>(色違提升) · <code>custom</code>(自訂，需在遊戲代碼中實作)
+        </div>
+        <div id="shop-config-list"></div>
+      </div>
+
+      <!-- ══ 音樂設定 ══ -->
+      <div class="panel" id="panel-music-config">
+        <div class="panel-title">🎵 音樂設定</div>
+        <div class="info-box">
+          所有音樂檔案請放至 <code>assets/music/</code> 資料夾。填寫檔名即可（含副檔名）。<br>
+          留空 = 使用程式生成的音樂（飼養箱/戰鬥場景有預設生成音樂；其他場景靜音）。
+        </div>
+        <div class="card" id="music-config-form"></div>
+      </div>
+
+      <!-- ══ 音效設定 ══ -->
+      <div class="panel" id="panel-sfx-config">
+        <div class="panel-title">🔊 音效設定</div>
+        <div class="info-box">
+          所有音效檔案請放至 <code>assets/sfx/</code> 資料夾。填寫檔名即可。<br>
+          留空 = 使用程式生成的音效。
+        </div>
+        <div class="card" id="sfx-config-form"></div>
+      </div>
+
+      <!-- ══ 場景圖片 ══ -->
+      <div class="panel" id="panel-scene-config">
+        <div class="panel-title">🖼️ 場景圖片</div>
+        <div class="info-box">
+          背景圖片請放至 <code>assets/scenes/</code> 資料夾。建議尺寸：1920×1080 或按實際版面比例。<br>
+          留空 = 使用程式繪製的背景。
+        </div>
+        <div class="card" id="scene-config-form"></div>
+      </div>
+
+      <!-- ══ UI 圖片 ══ -->
+      <div class="panel" id="panel-ui-config">
+        <div class="panel-title">🎨 UI 圖片</div>
+        <div class="info-box">
+          UI 素材請放至 <code>assets/ui/</code> 資料夾。留空 = 使用預設 CSS 樣式。
+        </div>
+        <div class="card" id="ui-config-form"></div>
+      </div>
+
+      <!-- ══ 升級經驗 ══ -->
+      <div class="panel" id="panel-exp-config">
+        <div class="panel-title">📈 升級經驗表</div>
+        <div class="info-box">每個等級所需的累計總經驗值，數值必須遞增。</div>
+        <div class="card" id="exp-config-form"></div>
+      </div>
+
+      <!-- ══ 技能平衡 ══ -->
+      <div class="panel" id="panel-skill-config">
+        <div class="panel-title">🎯 技能平衡</div>
+        <div class="info-box">調整被動技能數值、狀態效果、系統機率。儲存後在遊戲中即時生效。</div>
+        <div id="skill-config-panels"></div>
+      </div>
+
+      <!-- ══ 匯出 ══ -->
+      <div class="panel" id="panel-export">
+        <div class="panel-title">📤 匯出 species.js</div>
+        <div class="info-box">
+          調整完成後點「生成」，複製內容覆蓋 <code>species.js</code> 檔案，所有設定就會永久保存。<br>
+          「儲存並套用」直接寫入 localStorage，重新整理遊戲頁即可看到效果。<b>換電腦前請用「匯出 JSON」備份。</b>
+        </div>
+        <button class="btn btn-primary" onclick="generateExport()">🔧 生成 species.js</button>
+        <div id="export-output" style="margin-top:14px;"></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div id="save-bar">
+  <span style="font-weight:700;color:var(--orange);">● 有未儲存的變更</span>
+  <div style="display:flex;gap:8px;">
+    <button class="btn btn-secondary btn-sm" onclick="revertChanges()">↩ 還原</button>
+    <button class="btn btn-primary btn-sm" onclick="saveAll()">💾 儲存並套用</button>
+  </div>
+</div>
+<div id="toast"></div>
+
+<script src="species.js"></script>
+<script src="skills.js"></script>
+<script>
+const ADMIN_PASSWORD='admin123';
+let wSpecies,wBattleConfig,wShopConfig,wMusicConfig,wSfxConfig,wSceneConfig,wUiConfig,wExpTable,wSkillConfig;
+let dirty=false;
+
+function deepClone(o){return JSON.parse(JSON.stringify(o));}
+function markDirty(){dirty=true;document.getElementById('save-bar').classList.add('show');document.getElementById('unsaved-dot').style.display='';}
+function clearDirty(){dirty=false;document.getElementById('save-bar').classList.remove('show');document.getElementById('unsaved-dot').style.display='none';}
+
+function doLogin(){
+  if(document.getElementById('pw-input').value===ADMIN_PASSWORD){
+    document.getElementById('login-screen').style.display='none';
+    document.getElementById('admin-app').style.display='flex';
+    initAdmin();
+  } else { toast('密碼錯誤','danger'); document.getElementById('pw-input').value=''; }
+}
+function doLogout(){location.reload();}
+
+async function initAdmin(){
+  // 優先從 admin_config.json 讀取（跨電腦持久設定），找不到才用 localStorage
+  let saved={};
+  try{
+    const res=await fetch('admin_config.json?_='+Date.now());
+    if(res.ok){saved=await res.json();localStorage.setItem('mg_admin_config',JSON.stringify(saved));toast('📂 已從 admin_config.json 載入設定');}
+  }catch(e){}
+  if(!Object.keys(saved).length) saved=loadSavedConfig();
+  wSpecies      = saved.species      || deepClone(SPECIES);
+  wBattleConfig = saved.battleConfig || deepClone(BATTLE_CONFIG);
+  wShopConfig   = saved.shopConfig   || deepClone(SHOP_CONFIG);
+  wMusicConfig  = saved.musicConfig  || deepClone(MUSIC_CONFIG);
+  wSfxConfig    = saved.sfxConfig    || deepClone(SFX_CONFIG);
+  wSceneConfig  = saved.sceneConfig  || deepClone(SCENE_CONFIG);
+  wUiConfig     = saved.uiConfig     || deepClone(UI_CONFIG);
+  wExpTable     = saved.expTable     || deepClone(EXP_TO_LEVEL);
+  wSkillConfig  = saved.skillConfig  || deepClone(SKILL_CONFIG);
+  renderAll();
+}
+
+function loadSavedConfig(){
+  try{const r=localStorage.getItem('mg_admin_config');return r?JSON.parse(r):{};}catch(e){return {};}
+}
+
+function renderAll(){
+  renderSpeciesPanel();
+  renderBattleConfigPanel();
+  renderSkillConfigPanel();
+  renderShopPanel();
+  renderMusicPanel();
+  renderSfxPanel();
+  renderScenePanel();
+  renderUiPanel();
+  renderExpPanel();
+}
+
+// ══════════════════════════════════════════════
+//  SKILL CONFIG PANEL
+// ══════════════════════════════════════════════
+function _skillSlider(section, key, subkey, label, min, max, step){
+  const val=wSkillConfig[section][key][subkey];
+  return `<div class="bc-row">
+    <label class="bc-label">${label}</label>
+    <input type="range" min="${min}" max="${max}" step="${step}" value="${val}"
+      oninput="this.nextElementSibling.textContent=this.value;wSkillConfig['${section}']['${key}']['${subkey}']=parseFloat(this.value);markDirty();">
+    <span class="bc-val">${val}</span>
+  </div>`;
+}
+
+function renderSkillConfigPanel(){
+  const cont=document.getElementById('skill-config-panels');
+  if(!cont)return;
+  let html='';
+
+  // 系統參數
+  html+=`<div class="bc-section">系統機率</div>`;
+  html+=_skillSlider('system','awakeningChance','','覺醒機率',0,1,0.01)
+    .replace("['system']['awakeningChance']['']","['system']['awakeningChance']")
+    .replace(/wSkillConfig\['system'\]\['awakeningChance'\]\[undefined\]/,"wSkillConfig['system']['awakeningChance']");
+
+  // Helper: flat system keys
+  const sysMeta=[
+    {k:'awakeningChance',   label:'覺醒機率',      min:0,max:1,step:0.01},
+    {k:'breedInheritChanceA',label:'交配繼承A機率', min:0,max:1,step:0.01},
+    {k:'breedInheritChanceB',label:'交配繼承B機率', min:0,max:1,step:0.01},
+    {k:'breedRandomChance', label:'交配隨機機率',   min:0,max:1,step:0.01},
+    {k:'freeSlotFillChance',label:'初始自由槽填充機率',min:0,max:1,step:0.01},
+  ];
+  html='<div class="bc-section">系統機率</div>';
+  sysMeta.forEach(({k,label,min,max,step})=>{
+    const val=wSkillConfig.system[k];
+    html+=`<div class="bc-row"><label class="bc-label">${label}</label>
+      <input type="range" min="${min}" max="${max}" step="${step}" value="${val}"
+        oninput="this.nextElementSibling.textContent=parseFloat(this.value).toFixed(2);wSkillConfig.system['${k}']=parseFloat(this.value);markDirty();">
+      <span class="bc-val">${val}</span></div>`;
+  });
+
+  // 狀態效果
+  html+='<div class="bc-section">狀態效果 BUFF/DEBUFF</div>';
+  const statusMeta=[
+    {id:'brave',     params:[{k:'atkMulti',l:'ATK倍率',mn:1,mx:3,s:0.1},{k:'defMulti',l:'DEF倍率',mn:1,mx:3,s:0.1},{k:'duration',l:'持續秒',mn:1,mx:30,s:1}]},
+    {id:'endure',    params:[{k:'defMulti',l:'DEF倍率',mn:1,mx:4,s:0.1},{k:'duration',l:'持續秒',mn:1,mx:30,s:1}]},
+    {id:'frenzy',    params:[{k:'dmgMulti',l:'傷害倍率',mn:1,mx:5,s:0.1}]},
+    {id:'regen',     params:[{k:'totalHpPercent',l:'回復HP%',mn:0.1,mx:2,s:0.05},{k:'duration',l:'持續秒',mn:1,mx:30,s:1}]},
+    {id:'aroused',   params:[{k:'counterChance',l:'反擊機率',mn:0,mx:1,s:0.05},{k:'counterMulti',l:'反傷倍率',mn:0,mx:2,s:0.1}]},
+    {id:'conductive',params:[{k:'chainMulti',l:'鏈傷倍率',mn:0,mx:1,s:0.05}]},
+    {id:'burn',      params:[{k:'durationSec',l:'持續秒',mn:1,mx:30,s:1}]},
+    {id:'freeze',    params:[{k:'triggerStacks',l:'凍結觸發層數',mn:1,mx:20,s:1},{k:'stunDuration',l:'暈眩秒',mn:1,mx:10,s:1}]},
+    {id:'paralyze',  params:[{k:'missChance',l:'揮空機率',mn:0,mx:1,s:0.05}]},
+    {id:'fear',      params:[{k:'duration',l:'持續秒',mn:1,mx:10,s:1}]},
+    {id:'poison',    params:[{k:'maxHpPercentPerStack',l:'每層HP%傷',mn:0.001,mx:0.05,s:0.001},{k:'minDmgPerStack',l:'每層最低傷',mn:1,mx:10,s:1},{k:'maxStacks',l:'最大層數',mn:1,mx:30,s:1},{k:'healReduction',l:'治療降低',mn:0,mx:1,s:0.05}]},
+  ];
+  statusMeta.forEach(({id,params})=>{
+    html+=`<div style="margin:8px 0 2px;font-size:.75rem;font-weight:800;color:var(--teal);">${id}</div>`;
+    params.forEach(({k,l,mn,mx,s})=>{
+      const val=wSkillConfig.status[id]?.[k]??'?';
+      html+=`<div class="bc-row"><label class="bc-label">${l}</label>
+        <input type="range" min="${mn}" max="${mx}" step="${s}" value="${val}"
+          oninput="this.nextElementSibling.textContent=parseFloat(this.value);if(!wSkillConfig.status['${id}'])wSkillConfig.status['${id}']={};wSkillConfig.status['${id}']['${k}']=parseFloat(this.value);markDirty();">
+        <span class="bc-val">${val}</span></div>`;
+    });
+  });
+
+  // 天生技能
+  html+='<div class="bc-section">天生技能 Innate</div>';
+  const innateMeta=[
+    {id:'fire_innate_1',  params:[{k:'burnChance',l:'燃燒機率',mn:0,mx:1,s:0.05}]},
+    {id:'fire_innate_2',  params:[{k:'burnChance',l:'燃燒機率',mn:0,mx:1,s:0.05}]},
+    {id:'water_innate_1', params:[{k:'wetChance',l:'潮濕機率',mn:0,mx:1,s:0.05}]},
+    {id:'water_innate_2', params:[{k:'hpThreshold',l:'HP閾值',mn:0.1,mx:0.9,s:0.05},{k:'defMulti',l:'DEF倍率',mn:1,mx:4,s:0.1},{k:'duration',l:'持續秒',mn:1,mx:30,s:1}]},
+    {id:'water_innate_3', params:[{k:'intervalSec',l:'間隔秒',mn:1,mx:60,s:1}]},
+    {id:'electric_innate_2',params:[{k:'paralyzeChance',l:'麻痺機率',mn:0,mx:1,s:0.05},{k:'paralyzeDuration',l:'持續秒',mn:1,mx:10,s:0.5}]},
+    {id:'electric_innate_3',params:[{k:'triggerCount',l:'計次門檻',mn:1,mx:10,s:1}]},
+    {id:'earth_innate_1', params:[{k:'defMulti',l:'DEF倍率',mn:1,mx:4,s:0.1},{k:'spdReduction',l:'移速降低',mn:0,mx:0.9,s:0.05}]},
+    {id:'earth_innate_2', params:[{k:'counterChance',l:'反擊機率',mn:0,mx:1,s:0.05}]},
+    {id:'light_innate_1', params:[{k:'duration',l:'勇敢持續秒',mn:1,mx:30,s:1}]},
+    {id:'light_innate_2', params:[{k:'regenChance',l:'再生機率',mn:0,mx:1,s:0.05}]},
+    {id:'dark_innate_1',  params:[{k:'fearChance',l:'恐懼機率',mn:0,mx:1,s:0.05},{k:'fearDuration',l:'持續秒',mn:1,mx:10,s:0.5}]},
+    {id:'dark_innate_2',  params:[{k:'healPercent',l:'回復HP%',mn:0.05,mx:1,s:0.05}]},
+    {id:'grass_innate_3', params:[{k:'paralyzeDuration',l:'麻痺秒',mn:1,mx:10,s:0.5}]},
+  ];
+  innateMeta.forEach(({id,params})=>{
+    html+=`<div style="margin:8px 0 2px;font-size:.75rem;font-weight:800;color:var(--teal);">${id}</div>`;
+    params.forEach(({k,l,mn,mx,s})=>{
+      const val=wSkillConfig.innate[id]?.[k]??'?';
+      html+=`<div class="bc-row"><label class="bc-label">${l}</label>
+        <input type="range" min="${mn}" max="${mx}" step="${s}" value="${val}"
+          oninput="this.nextElementSibling.textContent=parseFloat(this.value);if(!wSkillConfig.innate['${id}'])wSkillConfig.innate['${id}']={};wSkillConfig.innate['${id}']['${k}']=parseFloat(this.value);markDirty();">
+        <span class="bc-val">${val}</span></div>`;
+    });
+  });
+
+  // 自由技能池
+  html+='<div class="bc-section">自由技能 Free</div>';
+  const freeMeta=[
+    {id:'fire_free_1',  params:[{k:'triggerCount',l:'計次門檻',mn:1,mx:10,s:1}]},
+    {id:'fire_free_2',  params:[{k:'triggerCount',l:'受擊門檻',mn:1,mx:10,s:1},{k:'atkMulti',l:'傷害倍率',mn:0,mx:2,s:0.1},{k:'burnStacks',l:'燃燒層數',mn:1,mx:10,s:1}]},
+    {id:'fire_free_3',  params:[{k:'intervalSec',l:'間隔秒',mn:1,mx:30,s:1},{k:'maxHpPercent',l:'HP%係數',mn:0,mx:0.2,s:0.005},{k:'levelFloor',l:'等級係數',mn:0,mx:10,s:1}]},
+    {id:'fire_free_4',  params:[{k:'atkBonusPerStack',l:'每層ATK%',mn:0,mx:0.5,s:0.01},{k:'minBonus',l:'最低加成',mn:1,mx:20,s:1}]},
+    {id:'fire_free_5',  params:[{k:'hpThreshold',l:'HP閾值',mn:0.05,mx:0.5,s:0.05},{k:'intervalMulti',l:'冷卻倍率',mn:0.1,mx:1,s:0.05}]},
+    {id:'water_free_1', params:[{k:'triggerCount',l:'計次門檻',mn:1,mx:10,s:1},{k:'atkMulti',l:'傷害倍率',mn:0,mx:2,s:0.1},{k:'freezeDuration',l:'冰凍秒',mn:0.5,mx:5,s:0.5}]},
+    {id:'water_free_2', params:[{k:'triggerCount',l:'受擊門檻',mn:1,mx:10,s:1},{k:'defMulti',l:'DEF倍率',mn:1,mx:4,s:0.1},{k:'duration',l:'持續秒',mn:1,mx:10,s:0.5}]},
+    {id:'water_free_3', params:[{k:'intervalSec',l:'間隔秒',mn:1,mx:30,s:1},{k:'atkMulti',l:'傷害倍率',mn:0,mx:2,s:0.1},{k:'freezeStackMulti',l:'冰凍層倍',mn:1,mx:50,s:1}]},
+    {id:'water_free_4', params:[{k:'wetTriggerChance',l:'再生機率',mn:0,mx:1,s:0.05}]},
+    {id:'water_free_5', params:[{k:'spreadChance',l:'擴散機率',mn:0,mx:1,s:0.05}]},
+    {id:'grass_free_1', params:[{k:'triggerCount',l:'計次門檻',mn:1,mx:10,s:1},{k:'atkMulti',l:'傷害倍率',mn:0,mx:2,s:0.1},{k:'poisonStacks',l:'中毒層數',mn:1,mx:10,s:1}]},
+    {id:'grass_free_2', params:[{k:'triggerCount',l:'受擊門檻',mn:1,mx:10,s:1},{k:'thornsGain',l:'荊棘層數',mn:1,mx:20,s:1}]},
+    {id:'grass_free_3', params:[{k:'intervalSec',l:'間隔秒',mn:1,mx:30,s:1},{k:'maxHpPercent',l:'HP%係數',mn:0,mx:0.2,s:0.005},{k:'poisonStackMulti',l:'毒層倍',mn:1,mx:30,s:1},{k:'levelFloor',l:'等級係數',mn:0,mx:10,s:1}]},
+    {id:'grass_free_4', params:[{k:'dmgBonus',l:'傷害加成%',mn:0,mx:2,s:0.05},{k:'minBonus',l:'最低加成',mn:1,mx:30,s:1}]},
+    {id:'grass_free_5', params:[{k:'defReduction',l:'DEF降低%',mn:0,mx:0.5,s:0.05},{k:'minReduction',l:'最低降低',mn:1,mx:20,s:1}]},
+    {id:'electric_free_1',params:[{k:'triggerCount',l:'計次門檻',mn:1,mx:10,s:1},{k:'chainMulti',l:'鏈傷倍率',mn:0,mx:1,s:0.05}]},
+    {id:'electric_free_2',params:[{k:'triggerCount',l:'受擊門檻',mn:1,mx:10,s:1},{k:'atkMulti',l:'傷害倍率',mn:0,mx:2,s:0.1},{k:'paralyzeDuration',l:'麻痺秒',mn:1,mx:10,s:0.5}]},
+    {id:'electric_free_3',params:[{k:'intervalSec',l:'間隔秒',mn:1,mx:30,s:1},{k:'stackMulti',l:'層倍係數',mn:1,mx:50,s:1},{k:'chainCount',l:'彈射目標',mn:1,mx:5,s:1}]},
+    {id:'electric_free_4',params:[{k:'resetChance',l:'重置機率',mn:0,mx:1,s:0.05}]},
+    {id:'electric_free_5',params:[{k:'immuneChance',l:'免疫機率',mn:0,mx:1,s:0.05}]},
+    {id:'dark_free_1',  params:[{k:'triggerCount',l:'計次門檻',mn:1,mx:10,s:1},{k:'atkMulti',l:'傷害倍率',mn:0,mx:3,s:0.1},{k:'fearDuration',l:'恐懼秒',mn:0.5,mx:5,s:0.5}]},
+    {id:'dark_free_2',  params:[{k:'triggerCount',l:'受擊門檻',mn:1,mx:10,s:1},{k:'atkMulti',l:'傷害倍率',mn:0,mx:2,s:0.1},{k:'poisonStacks',l:'中毒層數',mn:1,mx:10,s:1}]},
+    {id:'dark_free_3',  params:[{k:'intervalSec',l:'間隔秒',mn:1,mx:30,s:1},{k:'lostHpPercent',l:'損失HP%',mn:0,mx:0.5,s:0.01},{k:'levelFloor',l:'等級係數',mn:0,mx:20,s:1}]},
+    {id:'dark_free_5',  params:[{k:'regenPercent',l:'回復HP%',mn:0,mx:0.5,s:0.01},{k:'regenDuration',l:'秒',mn:1,mx:5,s:0.5}]},
+    {id:'light_free_1', params:[{k:'triggerCount',l:'計次門檻',mn:1,mx:10,s:1},{k:'atkMulti',l:'傷害倍率',mn:0,mx:2,s:0.1}]},
+    {id:'light_free_2', params:[{k:'triggerCount',l:'受擊門檻',mn:1,mx:10,s:1},{k:'defMulti',l:'DEF倍率',mn:1,mx:4,s:0.1},{k:'duration',l:'持續秒',mn:1,mx:10,s:0.5}]},
+    {id:'light_free_3', params:[{k:'intervalSec',l:'間隔秒',mn:1,mx:30,s:1},{k:'atkMulti',l:'傷害倍率',mn:0,mx:5,s:0.1},{k:'debuffMulti',l:'負面狀態倍率',mn:1,mx:3,s:0.1}]},
+    {id:'light_free_4', params:[{k:'defIgnorePercent',l:'無視DEF%',mn:0,mx:1,s:0.05}]},
+    {id:'light_free_5', params:[{k:'shieldPercent',l:'護盾HP%',mn:0,mx:1,s:0.05}]},
+  ];
+  freeMeta.forEach(({id,params})=>{
+    html+=`<div style="margin:8px 0 2px;font-size:.75rem;font-weight:800;color:var(--teal);">${id}</div>`;
+    params.forEach(({k,l,mn,mx,s})=>{
+      const val=wSkillConfig.free[id]?.[k]??'?';
+      html+=`<div class="bc-row"><label class="bc-label">${l}</label>
+        <input type="range" min="${mn}" max="${mx}" step="${s}" value="${val}"
+          oninput="this.nextElementSibling.textContent=parseFloat(this.value);if(!wSkillConfig.free['${id}'])wSkillConfig.free['${id}']={};wSkillConfig.free['${id}']['${k}']=parseFloat(this.value);markDirty();">
+        <span class="bc-val">${val}</span></div>`;
+    });
+  });
+
+  cont.innerHTML=html;
+}
+
+// ── Panels ──
+function showPanel(id){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.side-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  const sb=document.getElementById('sbtn-'+id);if(sb)sb.classList.add('active');
+}
+
+// ── Toast ──
+function toast(msg,type=''){
+  const c=document.getElementById('toast');const d=document.createElement('div');
+  d.className='toast-msg'+(type?' '+type:'');d.textContent=msg;c.appendChild(d);
+  setTimeout(()=>d.remove(),3200);
+}
+
+// ══════════════════════════════════════════════
+//  SPECIES PANEL
+// ══════════════════════════════════════════════
+const ATTR_LABELS={grass:'草系',fire:'火系',water:'水系',electric:'電系',dark:'暗系',light:'光系'};
+const ATTR_LIST=['grass','fire','water','electric','dark','light'];
+let spFilter='all';
+let spOpenIds=new Set();
+
+function renderSpeciesPanel(){
+  const tabs=document.getElementById('sp-attr-tabs');tabs.innerHTML='';
+  ['all',...ATTR_LIST].forEach(a=>{
+    const b=document.createElement('button');b.className='tab'+(spFilter===a?' active':'');
+    b.textContent=a==='all'?'全部':ATTR_LABELS[a];b.onclick=()=>{spFilter=a;renderSpeciesPanel();};tabs.appendChild(b);
+  });
+  const list=document.getElementById('species-list');list.innerHTML='';
+  const filtered=wSpecies.filter(sp=>spFilter==='all'||sp.attr===spFilter);
+  filtered.forEach(sp=>{
+    const card=document.createElement('div');card.className='sp-card';
+    const isOpen=spOpenIds.has(sp.id);
+    card.innerHTML=`
+      <div class="sp-header" onclick="toggleSp(${sp.id})">
+        <span style="font-size:.72rem;color:var(--text3);width:26px;">#${sp.id}</span>
+        <span style="font-weight:800;flex:1;">${sp.name}</span>
+        <span class="attr-badge attr-${sp.attr}">${ATTR_LABELS[sp.attr]}</span>
+        <span style="color:var(--gold);font-size:.78rem;margin-left:6px;">${'⭐'.repeat(sp.rarity)}</span>
+        <span style="color:var(--text3);font-size:.72rem;margin-left:8px;">${sp.atkType}</span>
+        <button class="btn btn-danger btn-xs" style="margin-left:10px;" onclick="event.stopPropagation();deleteSpecies(${sp.id})">刪除</button>
+        <span style="color:var(--text2);margin-left:8px;">${isOpen?'▴':'▾'}</span>
+      </div>
+      <div class="sp-body${isOpen?' open':''}" id="spbody-${sp.id}">${isOpen?renderSpForm(sp):''}</div>`;
+    list.appendChild(card);
+  });
+}
+
+function toggleSp(id){
+  const body=document.getElementById('spbody-'+id);if(!body)return;
+  if(spOpenIds.has(id)){spOpenIds.delete(id);body.classList.remove('open');body.innerHTML='';}
+  else{
+    spOpenIds.add(id);body.classList.add('open');
+    const sp=wSpecies.find(s=>s.id===id);if(sp)body.innerHTML=renderSpForm(sp);
+    refreshSpPreview(id);
+  }
+}
+
+function renderSpForm(sp){
+  const atkTypes=['melee','ranged','area'];const atklbl={melee:'⚔️ 近戰',ranged:'🏹 遠程',area:'💥 範圍'};
+  const rarOpts=[1,2,3,4,5].map(r=>`<option value="${r}" ${r===sp.rarity?'selected':''}>${'⭐'.repeat(r)}</option>`).join('');
+  const attrOpts=ATTR_LIST.map(a=>`<option value="${a}" ${a===sp.attr?'selected':''}>${ATTR_LABELS[a]}</option>`).join('');
+  const atkOpts=atkTypes.map(t=>`<option value="${t}" ${t===sp.atkType?'selected':''}>${atklbl[t]}</option>`).join('');
+  const evoOpts=`<option value="null" ${sp.evoTo===null?'selected':''}>無</option>`+wSpecies.map(s=>`<option value="${s.id}" ${s.id===sp.evoTo?'selected':''}>#${s.id} ${s.name}</option>`).join('');
+  const evoFromOpts=`<option value="null" ${sp.evoFrom===null?'selected':''}>無</option>`+wSpecies.map(s=>`<option value="${s.id}" ${s.id===sp.evoFrom?'selected':''}>#${s.id} ${s.name}</option>`).join('');
+  const spr=sp.sprites||{idle:'',evo1:'',evo2:'',attack:'',hurt:'',blink:'',blinkEvo1:'',blinkEvo2:''};
+  const spriteFields=['idle','blink','evo1','blinkEvo1','evo2','blinkEvo2','attack','hurt'];
+  const spriteLabels={idle:'待機圖(idle)',blink:'閉眼圖(blink，選填)',evo1:'進化一階圖(evo1)',blinkEvo1:'進化一階閉眼圖(blinkEvo1，選填)',evo2:'最終進化圖(evo2)',blinkEvo2:'最終進化閉眼圖(blinkEvo2，選填)',attack:'攻擊特效圖(attack)',hurt:'受傷圖(hurt, 選填)'};
+
+  return `
+  <div class="preview-row" id="sp-preview-${sp.id}"></div>
+  <div style="font-weight:800;font-size:.82rem;color:var(--teal);margin-bottom:8px;">基本資料</div>
+  <div class="form-grid" style="margin-bottom:12px;">
+    <div class="form-row"><label>名稱</label><input type="text" value="${sp.name}" onchange="updSp(${sp.id},'name',this.value)"></div>
+    <div class="form-row"><label>屬性</label><select onchange="updSp(${sp.id},'attr',this.value)">${attrOpts}</select></div>
+    <div class="form-row"><label>稀有度</label><select onchange="updSp(${sp.id},'rarity',parseInt(this.value))">${rarOpts}</select></div>
+    <div class="form-row"><label>攻擊類型</label><select onchange="updSp(${sp.id},'atkType',this.value)">${atkOpts}</select></div>
+    <div class="form-row"><label>進化來源</label><select onchange="updSp(${sp.id},'evoFrom',this.value==='null'?null:parseInt(this.value))">${evoFromOpts}</select></div>
+    <div class="form-row"><label>進化目標</label><select onchange="updSp(${sp.id},'evoTo',this.value==='null'?null:parseInt(this.value))">${evoOpts}</select></div>
+  </div>
+  <hr>
+  <div style="font-weight:800;font-size:.82rem;color:var(--teal);margin-bottom:8px;">數值</div>
+  <div class="form-grid" style="margin-bottom:12px;">
+    ${['HP','ATK','DEF','AGI','SPD'].map(stat=>`
+    <div class="form-row"><label>基礎 ${stat}</label>
+      <div class="range-wrap">
+        <input type="range" min="1" max="250" value="${sp['base'+stat]}" oninput="this.nextElementSibling.textContent=this.value;updSp(${sp.id},'base${stat}',parseInt(this.value))">
+        <span class="range-val">${sp['base'+stat]}</span>
+      </div>
+    </div>`).join('')}
+    <div class="form-row"><label>個體差異 ±ivRange</label>
+      <div class="range-wrap">
+        <input type="range" min="0" max="30" value="${sp.ivRange||5}" oninput="this.nextElementSibling.textContent=this.value;updSp(${sp.id},'ivRange',parseInt(this.value))">
+        <span class="range-val">${sp.ivRange||5}</span>
+      </div>
+    </div>
+    <div class="form-row"><label>擊退距離 knockback（像素）</label>
+      <div class="range-wrap">
+        <input type="range" min="0" max="120" value="${sp.knockback||0}" oninput="this.nextElementSibling.textContent=this.value;updSp(${sp.id},'knockback',parseInt(this.value))">
+        <span class="range-val">${sp.knockback||0}</span>
+      </div>
+    </div>
+    <div class="form-row"><label>體型最小值</label><input type="number" step="0.05" min="0.1" max="5" value="${sp.sizes[0]}" onchange="updSpSizes(${sp.id},0,parseFloat(this.value))"></div>
+    <div class="form-row"><label>體型最大值</label><input type="number" step="0.05" min="0.1" max="5" value="${sp.sizes[1]}" onchange="updSpSizes(${sp.id},1,parseFloat(this.value))"></div>
+  </div>
+  <hr>
+  <div style="font-weight:800;font-size:.82rem;color:var(--teal);margin-bottom:4px;">圖片設定 <span style="font-weight:400;color:var(--text2);font-size:.72rem;">（放至 assets/monsters/ 資料夾）</span></div>
+  <div class="info-box" style="margin-bottom:10px;">
+    🤖 <b>自動命名</b>：留空時系統自動套用預設檔名（如 <code>mon_${String(sp.id).padStart(2,'0')}_idle.png</code>）。
+    只有需要覆蓋預設時才填入自訂檔名。
+  </div>
+  <div class="form-grid">
+    ${spriteFields.map(k=>{
+      const keySuffix={idle:'idle',evo1:'evo1',evo2:'evo2',blink:'blink',blinkEvo1:'blink_evo1',blinkEvo2:'blink_evo2',attack:'attack',hurt:'hurt'}[k]||k;
+      const autoName=`mon_${String(sp.id).padStart(2,'0')}_${keySuffix}.png`;
+      return`<div class="form-row">
+      <label>${spriteLabels[k]}</label>
+      <input type="text" placeholder="預設：${autoName}" value="${spr[k]||''}" onchange="updSpSprite(${sp.id},'${k}',this.value)">
+      <div class="file-hint">實際套用：${spr[k]||autoName}</div>
+    </div>`;}).join('')}
+  </div>
+  <div style="margin-top:10px;display:flex;gap:8px;">
+    <button class="btn btn-secondary btn-sm" onclick="refreshSpPreview(${sp.id})">🔄 預覽外觀</button>
+  </div>`;
+}
+
+function updSp(id,key,val){const sp=wSpecies.find(s=>s.id===id);if(sp){sp[key]=val;markDirty();}}
+function updSpSizes(id,idx,val){const sp=wSpecies.find(s=>s.id===id);if(sp){sp.sizes[idx]=val;markDirty();}}
+function updSpSprite(id,key,val){
+  const sp=wSpecies.find(s=>s.id===id);
+  if(sp){if(!sp.sprites)sp.sprites={};sp.sprites[key]=val;markDirty();}
+  // Refresh path preview
+  const body=document.getElementById('spbody-'+id);
+  if(body&&body.classList.contains('open')){body.innerHTML=renderSpForm(sp);refreshSpPreview(id);}
+}
+
+function refreshSpPreview(id){
+  const sp=wSpecies.find(s=>s.id===id);if(!sp)return;
+  const wrap=document.getElementById('sp-preview-'+id);if(!wrap)return;
+  wrap.innerHTML='';
+  [0,10,20].forEach((lv,i)=>{
+    const div=document.createElement('div');div.className='preview-stage';
+    const can=document.createElement('canvas');can.width=80;can.height=80;
+    const fakeMon={speciesId:sp.id,isShiny:false,size:1.0,level:lv||1};
+    const ctx=can.getContext('2d');ctx.clearRect(0,0,80,80);
+    // Check for sprite
+    const stage=i;const spr=sp.sprites||{};
+    const skey=stage===0?'idle':stage===1?'evo1':'evo2';
+    const spritePath=spr[skey]?'assets/monsters/'+spr[skey]:null;
+    if(spritePath){
+      const img=new Image();
+      img.onload=()=>{const sc=Math.min(80/img.width,80/img.height)*0.88;const dw=img.width*sc,dh=img.height*sc;ctx.drawImage(img,(80-dw)/2,(80-dh)/2,dw,dh);};
+      img.onerror=()=>{try{drawMonsterOnCanvas(ctx,fakeMon,40,46,1.0,false,'happy');}catch(e){}};
+      img.src=spritePath;
+    } else {
+      try{drawMonsterOnCanvas(ctx,fakeMon,40,46,1.0,false,'happy');}catch(e){}
+    }
+    div.appendChild(can);
+    const lbl=document.createElement('p');lbl.textContent=['基礎','進化I','進化II'][i];div.appendChild(lbl);
+    wrap.appendChild(div);
+  });
+}
+
+function addNewSpecies(){
+  const maxId=wSpecies.reduce((mx,s)=>Math.max(mx,s.id),-1);
+  const newId=maxId+1;
+  wSpecies.push({
+    id:newId,name:`新怪物 #${newId}`,attr:'grass',rarity:1,ivRange:5,
+    baseHP:50,baseATK:12,baseDEF:10,baseAGI:10,baseSPD:10,knockback:0,
+    atkType:'melee',sizes:[0.8,1.2],evoFrom:null,evoTo:null,
+    sprites:{idle:'',blink:'',evo1:'',blinkEvo1:'',evo2:'',blinkEvo2:'',attack:'',hurt:''}
+  });
+  spFilter='all';markDirty();renderSpeciesPanel();
+  // Auto-open the new one
+  setTimeout(()=>toggleSp(newId),50);
+  toast(`✅ 已新增 #${newId} 號物種，請填寫資料`);
+}
+
+function deleteSpecies(id){
+  if(!confirm(`確定刪除 #${id} ${wSpecies.find(s=>s.id===id)?.name}？\n此操作不影響已存在的怪物實例，但新的遊戲讀取時會找不到物種資料。`))return;
+  wSpecies=wSpecies.filter(s=>s.id!==id);
+  spOpenIds.delete(id);markDirty();renderSpeciesPanel();
+  toast(`🗑️ 已刪除 #${id}`);
+}
+
+// ══════════════════════════════════════════════
+//  BATTLE CONFIG
+// ══════════════════════════════════════════════
+const BC_META=[
+  {k:'critChance',       l:'暴擊機率',          min:0,  max:1,    step:0.01,  d:'0.10=10%'},
+  {k:'critMultiplier',   l:'暴擊倍率',          min:1,  max:5,    step:0.1,   d:'1.5=150%傷害'},
+  {k:'advMultiplier',    l:'屬性相剋倍率',      min:1,  max:5,    step:0.1,   d:'1.5=150%傷害'},
+  {k:'areaSpashRatio',   l:'範圍濺射比例',      min:0,  max:1,    step:0.05,  d:'0.5=非目標受50%'},
+  {k:'maxAGIDodge',      l:'閃避率上限',        min:0,  max:0.9,  step:0.05,  d:'0.40=最高40%'},
+  {k:'defDampeningRatio',l:'防禦減傷係數',      min:0,  max:2,    step:0.05,  d:'傷害=ATK-DEF×此值'},
+  {k:'expBase',          l:'戰鬥基礎EXP',       min:1,  max:500,  step:1,     d:'勝利後基礎經驗'},
+  {k:'battleCooldown',   l:'戰敗CD（秒）',      min:0,  max:3600, step:10,    d:'心情低落時間'},
+  {k:'shinyChance',      l:'色違機率',          min:0,  max:0.5,  step:0.001, d:'0.01=1%'},
+  {k:'shinyDrugChance',  l:'幻想藥色違機率',    min:0,  max:0.5,  step:0.001, d:'0.03=3%'},
+  {k:'breedDuration',    l:'配種時間（秒）',    min:1,  max:86400,step:1,     d:'真實秒數'},
+];
+function renderBattleConfigPanel(){
+  const form=document.getElementById('battle-config-form');
+  form.innerHTML=`<div class="card-title">全域戰鬥參數</div><div class="form-grid">`;
+  BC_META.forEach(m=>{
+    const val=wBattleConfig[m.k];
+    const dec=m.step<1?String(m.step).split('.')[1].length:0;
+    form.innerHTML+=`<div class="form-row">
+      <label>${m.l} <span class="file-hint">${m.d}</span></label>
+      <div class="range-wrap">
+        <input type="range" min="${m.min}" max="${m.max}" step="${m.step}" value="${val}"
+          oninput="this.nextElementSibling.textContent=parseFloat(this.value).toFixed(${dec});updBC('${m.k}',parseFloat(this.value))">
+        <span class="range-val">${parseFloat(val).toFixed(dec)}</span>
+      </div>
+    </div>`;
+  });
+  form.innerHTML+='</div>';
+}
+function updBC(k,v){wBattleConfig[k]=v;markDirty();}
+
+// ══════════════════════════════════════════════
+//  SHOP CONFIG
+// ══════════════════════════════════════════════
+const EFFECT_TYPES=['feed','heal','hatch','shiny_boost','custom'];
+const ITEM_TYPES=['consumable','egg','special'];
+
+function renderShopPanel(){
+  const list=document.getElementById('shop-config-list');list.innerHTML='';
+  wShopConfig.forEach((item,idx)=>{
+    const card=document.createElement('div');card.className='card';
+    card.innerHTML=`
+      <div class="card-title">
+        <span>${item.icon} ${item.name}</span>
+        <button class="btn btn-danger btn-xs" onclick="deleteShopItem(${idx})">刪除</button>
+      </div>
+      <div class="form-grid">
+        <div class="form-row"><label>ID (唯一識別碼)</label><input type="text" value="${item.id}" onchange="wShopConfig[${idx}].id=this.value;markDirty()"></div>
+        <div class="form-row"><label>顯示名稱</label><input type="text" value="${item.name}" onchange="wShopConfig[${idx}].name=this.value;markDirty()"></div>
+        <div class="form-row"><label>說明文字</label><input type="text" value="${item.desc}" onchange="wShopConfig[${idx}].desc=this.value;markDirty()"></div>
+        <div class="form-row"><label>圖示 Emoji</label><input type="text" value="${item.icon}" maxlength="4" onchange="wShopConfig[${idx}].icon=this.value;markDirty()"></div>
+        <div class="form-row"><label>價格（星塵）</label><input type="number" min="0" value="${item.price}" onchange="wShopConfig[${idx}].price=parseInt(this.value);markDirty()"></div>
+        <div class="form-row"><label>道具類型</label>
+          <select onchange="wShopConfig[${idx}].type=this.value;markDirty()">
+            ${ITEM_TYPES.map(t=>`<option value="${t}" ${t===item.type?'selected':''}>${t}</option>`).join('')}
+          </select>
+        </div>
+        <div class="form-row"><label>效果識別碼</label>
+          <select onchange="wShopConfig[${idx}].effect=this.value;markDirty()">
+            ${EFFECT_TYPES.map(e=>`<option value="${e}" ${e===item.effect?'selected':''}>${e}</option>`).join('')}
+          </select>
+        </div>
+        ${item.effect==='feed'?`<div class="form-row"><label>餵食 EXP 增量</label><input type="number" min="1" value="${item.expGain||50}" onchange="wShopConfig[${idx}].expGain=parseInt(this.value);markDirty()"></div>`:''}
+        <div class="form-row"><label>存放 key (inventory key)</label><input type="text" value="${item.key||item.id}" onchange="wShopConfig[${idx}].key=this.value;markDirty()"></div>
+      </div>`;
+    list.appendChild(card);
+  });
+}
+
+function addShopItem(){
+  const newId='item_'+Date.now();
+  wShopConfig.push({id:newId,name:'新道具',desc:'說明文字',icon:'📦',price:100,type:'consumable',effect:'custom',key:newId});
+  markDirty();renderShopPanel();
+  toast('✅ 已新增道具');
+}
+function deleteShopItem(idx){
+  if(!confirm(`確定刪除「${wShopConfig[idx].name}」？`))return;
+  wShopConfig.splice(idx,1);markDirty();renderShopPanel();toast('🗑️ 已刪除');
+}
+
+// ══════════════════════════════════════════════
+//  MUSIC / SFX CONFIG
+// ══════════════════════════════════════════════
+function renderMusicPanel(){
+  const form=document.getElementById('music-config-form');form.innerHTML='<div class="card-title">背景音樂設定</div><div class="form-grid">';
+  Object.entries(wMusicConfig).forEach(([k,v])=>{
+    form.innerHTML+=`<div class="form-row">
+      <label>${v.label} <span class="file-hint">assets/music/</span></label>
+      <input type="text" placeholder="檔名.mp3 (空白=程式生成)" value="${v.file||''}" onchange="wMusicConfig['${k}'].file=this.value;markDirty()">
+      <div class="form-row" style="margin-top:4px;">
+        <label>音量 (0~1)</label>
+        <div class="range-wrap">
+          <input type="range" min="0" max="1" step="0.05" value="${v.volume||0.35}" oninput="this.nextElementSibling.textContent=parseFloat(this.value).toFixed(2);wMusicConfig['${k}'].volume=parseFloat(this.value);markDirty()">
+          <span class="range-val">${(v.volume||0.35).toFixed(2)}</span>
+        </div>
+      </div>
+    </div>`;
+  });
+  form.innerHTML+='</div>';
+}
+
+function renderSfxPanel(){
+  const form=document.getElementById('sfx-config-form');form.innerHTML='<div class="card-title">音效設定</div><div class="form-grid">';
+  Object.entries(wSfxConfig).forEach(([k,v])=>{
+    form.innerHTML+=`<div class="form-row">
+      <label>${v.label} <span class="file-hint">assets/sfx/</span></label>
+      <input type="text" placeholder="檔名.mp3 (空白=程式音效)" value="${v.file||''}" onchange="wSfxConfig['${k}'].file=this.value;markDirty()">
+    </div>`;
+  });
+  form.innerHTML+='</div>';
+}
+
+// ══════════════════════════════════════════════
+//  SCENE / UI CONFIG
+// ══════════════════════════════════════════════
+function renderScenePanel(){
+  const form=document.getElementById('scene-config-form');form.innerHTML='<div class="card-title">場景背景圖片</div><div class="form-grid">';
+  Object.entries(wSceneConfig).forEach(([k,v])=>{
+    form.innerHTML+=`<div class="form-row">
+      <label>${v.label} <span class="file-hint">assets/scenes/</span></label>
+      <input type="text" placeholder="background.png (空白=程式繪製)" value="${v.bgFile||''}" onchange="wSceneConfig['${k}'].bgFile=this.value;markDirty()">
+      ${v.bgFile?`<div class="path-preview">assets/scenes/${v.bgFile}</div>`:''}
+      <label style="margin-top:4px;">鋪磚大小（px）</label>
+      <input type="number" min="16" max="2048" step="16" value="${v.tileSize||512}" onchange="wSceneConfig['${k}'].tileSize=parseInt(this.value)||512;markDirty()">
+    </div>`;
+  });
+  form.innerHTML+='</div>';
+}
+
+function renderUiPanel(){
+  const form=document.getElementById('ui-config-form');form.innerHTML='<div class="card-title">UI 素材圖片</div><div class="form-grid">';
+  Object.entries(wUiConfig).forEach(([k,v])=>{
+    form.innerHTML+=`<div class="form-row">
+      <label>${v.label} <span class="file-hint">assets/ui/</span></label>
+      <input type="text" placeholder="icon.png (空白=使用CSS)" value="${v.file||''}" onchange="wUiConfig['${k}'].file=this.value;markDirty()">
+    </div>`;
+  });
+  form.innerHTML+='</div>';
+}
+
+// ══════════════════════════════════════════════
+//  EXP TABLE
+// ══════════════════════════════════════════════
+function renderExpPanel(){
+  const form=document.getElementById('exp-config-form');
+  let h='<div class="card-title">每級所需累計EXP</div><div class="form-grid">';
+  for(let lv=1;lv<=30;lv++)
+    h+=`<div class="form-row"><label>Lv.${lv}</label><input type="number" min="0" value="${wExpTable[lv]||0}" onchange="wExpTable[${lv}]=parseInt(this.value);markDirty()"></div>`;
+  form.innerHTML=h+'</div>';
+}
+
+// ══════════════════════════════════════════════
+//  SAVE
+// ══════════════════════════════════════════════
+function saveAll(){
+  const data={species:wSpecies,battleConfig:wBattleConfig,skillConfig:wSkillConfig,shopConfig:wShopConfig,musicConfig:wMusicConfig,sfxConfig:wSfxConfig,sceneConfig:wSceneConfig,uiConfig:wUiConfig,expTable:wExpTable,savedAt:Date.now()};
+  localStorage.setItem('mg_admin_config',JSON.stringify(data));
+  clearDirty();
+  toast('✅ 已儲存！重新整理遊戲頁即可套用。');
+}
+function exportConfigJson(){
+  const raw=localStorage.getItem('mg_admin_config');
+  if(!raw){toast('⚠️ 請先儲存設定','warn');return;}
+  const blob=new Blob([JSON.stringify(JSON.parse(raw),null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='admin_config.json';a.click();URL.revokeObjectURL(a.href);
+  toast('📦 admin_config.json 已下載（跨裝置備份用）');
+}
+
+function revertChanges(){
+  const saved=loadSavedConfig();
+  wSpecies=saved.species||deepClone(SPECIES);
+  wBattleConfig=saved.battleConfig||deepClone(BATTLE_CONFIG);
+  wShopConfig=saved.shopConfig||deepClone(SHOP_CONFIG);
+  wMusicConfig=saved.musicConfig||deepClone(MUSIC_CONFIG);
+  wSfxConfig=saved.sfxConfig||deepClone(SFX_CONFIG);
+  wSceneConfig=saved.sceneConfig||deepClone(SCENE_CONFIG);
+  wUiConfig=saved.uiConfig||deepClone(UI_CONFIG);
+  wExpTable=saved.expTable||deepClone(EXP_TO_LEVEL);
+  wSkillConfig=saved.skillConfig||deepClone(SKILL_CONFIG);
+  clearDirty();renderAll();toast('↩️ 已還原');
+}
+
+// ══════════════════════════════════════════════
+//  EXPORT species.js
+// ══════════════════════════════════════════════
+function generateExport(){
+  function toJS(val,indent){
+    if(Array.isArray(val)){
+      if(val.length===0)return'[]';
+      const items=val.map(v=>toJS(v,indent+'  '));
+      return`[\n${items.map(i=>indent+'  '+i).join(',\n')}\n${indent}]`;
+    }
+    if(val===null)return'null';
+    if(typeof val==='object'){
+      const entries=Object.entries(val).map(([k,v])=>`${k}:${toJS(v,'')}`);
+      if(entries.join('').length<80)return'{'+entries.join(', ')+'}';
+      return`{\n${entries.map(e=>indent+'  '+e).join(',\n')}\n${indent}}`;
+    }
+    if(typeof val==='string')return`'${val.replace(/'/g,"\\'")}'`;
+    return String(val);
+  }
+
+  const lines=[
+`// ══════════════════════════════════════════════
+//  species.js  — 由 Monstro Garden Admin 生成
+//  ${new Date().toLocaleString('zh-TW')}
+// ══════════════════════════════════════════════
+
+const ATTRS=['grass','fire','water','electric','dark','light'];
+const ATTR_NAMES={grass:'草系',fire:'火系',water:'水系',electric:'電系',dark:'暗系',light:'光系'};
+const ATTR_COLORS={grass:'#4ecb71',fire:'#ff6b35',water:'#4a9eff',electric:'#ffd700',dark:'#8b5cf6',light:'#fbbf24'};
+const RARITY_NAMES=['','普通','稀有','超稀有','傳說','神話'];
+const RARITY_COLORS=['','#9ca3c8','#4a9eff','#8b5cf6','#ffd700','#ff6b9d'];
+const ATTR_ADVANTAGE={grass:['water','electric'],fire:['grass','dark'],water:['fire','electric'],electric:['water','light'],dark:['light','grass'],light:['dark','fire']};
+
+const ASSET_CONFIG = ${toJS(ASSET_CONFIG||{monsterDir:'assets/monsters/',sceneDir:'assets/scenes/',uiDir:'assets/ui/',fxDir:'assets/fx/',musicDir:'assets/music/',sfxDir:'assets/sfx/'},'')};
+
+const SCENE_CONFIG = ${toJS(wSceneConfig,'')};
+
+const UI_CONFIG = ${toJS(wUiConfig,'')};
+
+const MUSIC_CONFIG = ${toJS(wMusicConfig,'')};
+
+const SFX_CONFIG = ${toJS(wSfxConfig,'')};
+
+const BATTLE_CONFIG = ${toJS(wBattleConfig,'')};
+
+const EXP_TO_LEVEL = ${JSON.stringify(wExpTable)};
+
+const SPECIES = ${toJS(wSpecies,'')};
+
+const SHOP_CONFIG = ${toJS(wShopConfig,'')};
+
+const NPC_NAMES = ${JSON.stringify(NPC_NAMES).replace(/"/g,"'")};`,
+`
+// ══════════════════════════════════════════════
+//  skills.js  — 技能平衡數值（由 Admin 生成）
+//  ${new Date().toLocaleString('zh-TW')}
+// ══════════════════════════════════════════════
+
+// 注意：此段僅覆蓋 SKILL_CONFIG，完整 skills.js 其他內容請保留
+// 在 skills.js 頂部的 SKILL_CONFIG 定義後加入以下覆蓋區塊：
+Object.assign(SKILL_CONFIG.innate, ${JSON.stringify(wSkillConfig.innate,null,2)});
+Object.assign(SKILL_CONFIG.free,   ${JSON.stringify(wSkillConfig.free,null,2)});
+Object.assign(SKILL_CONFIG.status, ${JSON.stringify(wSkillConfig.status,null,2)});
+Object.assign(SKILL_CONFIG.system, ${JSON.stringify(wSkillConfig.system,null,2)});`
+  ];
+
+  const output=lines.join('\n');
+  const cont=document.getElementById('export-output');
+  cont.innerHTML=`<div style="display:flex;gap:10px;margin-bottom:10px;align-items:center;">
+    <button class="btn btn-primary btn-sm" onclick="copyExport()">📋 複製全部</button>
+    <span class="file-hint">複製後貼上覆蓋 species.js 檔案</span>
+  </div>
+  <textarea id="export-text" style="width:100%;height:440px;background:var(--bg3);color:var(--text);border:1.5px solid var(--card2);border-radius:10px;padding:12px;font-size:.72rem;font-family:monospace;resize:vertical;"></textarea>`;
+  document.getElementById('export-text').value=output;
+  toast('✅ 已生成！請複製並覆蓋 species.js');
+}
+
+function copyExport(){
+  const ta=document.getElementById('export-text');
+  if(ta)navigator.clipboard.writeText(ta.value).then(()=>toast('📋 已複製！'));
+}
+
+// ── apply admin config on load ──
+(function applyAdminConfig(){
+  try{
+    const raw=localStorage.getItem('mg_admin_config');if(!raw)return;
+    const data=JSON.parse(raw);
+    if(data.species)data.species.forEach((sp,i)=>{if(SPECIES[i])Object.assign(SPECIES[i],sp);else SPECIES.push(sp);});
+    if(data.battleConfig)Object.assign(BATTLE_CONFIG,data.battleConfig);
+    if(data.skillConfig&&typeof SKILL_CONFIG!=='undefined'){
+      ['innate','free','status','system'].forEach(sec=>{if(data.skillConfig[sec]&&SKILL_CONFIG[sec])Object.assign(SKILL_CONFIG[sec],data.skillConfig[sec]);});
+    }
+    if(data.shopConfig)Object.assign(SHOP_CONFIG,...[data.shopConfig]);
+    if(data.musicConfig)Object.assign(MUSIC_CONFIG,data.musicConfig);
+    if(data.expTable)data.expTable.forEach((v,i)=>{EXP_TO_LEVEL[i]=v;});
+  }catch(e){}
+})();
+</script>
+</body>
+</html>

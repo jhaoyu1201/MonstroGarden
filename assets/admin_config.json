@@ -1,0 +1,2085 @@
+{
+  "species": [
+    {
+      "id": 0,
+      "name": "泡芽",
+      "attr": "grass",
+      "rarity": 1,
+      "ivRange": 5,
+      "baseHP": 45,
+      "baseATK": 12,
+      "baseDEF": 10,
+      "baseAGI": 8,
+      "baseSPD": 10,
+      "knockback": 0,
+      "atkType": "melee",
+      "sizes": [
+        0.8,
+        1.2
+      ],
+      "evoFrom": null,
+      "evoTo": 1,
+      "sprites": {
+        "idle": "",
+        "evo1": "",
+        "evo2": "",
+        "attack": "",
+        "hurt": ""
+      }
+    },
+    {
+      "id": 1,
+      "name": "茂茂",
+      "attr": "grass",
+      "rarity": 2,
+      "ivRange": 5,
+      "baseHP": 65,
+      "baseATK": 18,
+      "baseDEF": 15,
+      "baseAGI": 10,
+      "baseSPD": 12,
+      "knockback": 0,
+      "atkType": "melee",
+      "sizes": [
+        1,
+        1.4
+      ],
+      "evoFrom": 0,
+      "evoTo": 2,
+      "sprites": {
+        "idle": "",
+        "evo1": "",
+        "evo2": "",
+        "attack": "",
+        "hurt": ""
+      }
+    },
+    {
+      "id": 2,
+      "name": "藤蔓王",
+      "attr": "grass",
+      "rarity": 3,
+      "ivRange": 5,
+      "baseHP": 90,
+      "baseATK": 28,
+      "baseDEF": 22,
+      "baseAGI": 12,
+      "baseSPD": 14,
+      "knockback": 0,
+      "atkType": "ranged",
+      "sizes": [
+        1.2,
+        1.6
+      ],
+      "evoFrom": 1,
+      "evoTo": null,
+      "sprites": {
+        "idle": "",
+        "evo1": "",
+        "evo2": "",
+        "attack": "",
+        "hurt": ""
+      }
+    },
+    {
+      "id": 3,
+      "name": "苔球",
+      "attr": "grass",
+      "rarity": 1,
+      "ivRange": 5,
+      "baseHP": 50,
+      "baseATK": 10,
+      "baseDEF": 14,
+      "baseAGI": 6,
+      "baseSPD": 8,
+      "knockback": 0,
+      "atkType": "melee",
+      "sizes": [
+        0.7,
+        1.1
+      ],
+      "evoFrom": null,
+      "evoTo": null,
+      "sprites": {
+        "idle": "",
+        "evo1": "",
+        "evo2": "",
+        "attack": "",
+        "hurt": ""
+      }
+    },
+    {
+      "id": 4,
+      "name": "葉靈",
+      "attr": "grass",
+      "rarity": 3,
+      "ivRange": 5,
+      "baseHP": 70,
+      "baseATK": 22,
+      "baseDEF": 18,
+      "baseAGI": 18,
+      "baseSPD": 20,
+      "knockback": 0,
+      "atkType": "ranged",
+      "sizes": [
+        0.9,
+        1.3
+      ],
+      "evoFrom": null,
+      "evoTo": null,
+      "sprites": {
+        "idle": "",
+        "evo1": "",
+        "evo2": "",
+        "attack": "",
+        "hurt": ""
+      }
+    },
+    {
+      "id": 5,
+      "name": "暖炭",
+      "attr": "fire",
+      "rarity": 1,
+      "ivRange": 5,
+      "baseHP": 40,
+      "baseATK": 15,
+      "baseDEF": 8,
+      "baseAGI": 10,
+      "baseSPD": 12,
+      "knockback": 0,
+      "atkType": "melee",
+      "sizes": [
+        0.8,
+        1.2
+      ],
+      "evoFrom": null,
+      "evoTo": 6,
+      "sprites": {
+        "idle": "",
+        "evo1": "",
+        "evo2": "",
+        "attack": "",
+        "hurt": ""
+      }
+    },
+    {
+      "id": 6,
+      "name": "火花仔",
+      "attr": "fire",
+      "rarity": 2,
+      "ivRange": 5,
+      "baseHP": 58,
+      "baseATK": 22,
+      "baseDEF": 12,
+      "baseAGI": 14,
+      "baseSPD": 15,
+      "knockback": 0,
+      "atkType": "melee",
+      "sizes": [
+        1,
+        1.4
+      ],
+      "evoFrom": 5,
+      "evoTo": 7,
+      "sprites": {
+        "idle": "",
+        "evo1": "",
+        "evo2": "",
+        "attack": "",
+        "hurt": ""
+      }
+    },
+    {
+      "id": 7,
+      "name": "熔岩獸",
+      "attr": "fire",
+      "rarity": 4,
+      "ivRange": 5,
+      "baseHP": 95,
+      "baseATK": 38,
+      "baseDEF": 20,
+      "baseAGI": 16,
+      "baseSPD": 18,
+      "knockback": 0,
+      "atkType": "area",
+      "sizes": [
+        1.3,
+        1.7
+      ],
+      "evoFrom": 6,
+      "evoTo": null,
+      "sprites": {
+        "idle": "",
+        "evo1": "",
+        "evo2": "",
+        "attack": "",
+        "hurt": ""
+      }
+    },
+    {
+      "id": 8,
+      "name": "火花球",
+      "attr": "fire",
+      "rarity": 2,
+      "ivRange": 5,
+      "baseHP": 52,
+      "baseATK": 20,
+      "baseDEF": 10,
+      "baseAGI": 16,
+      "baseSPD": 18,
+      "knockback": 0,
+      "atkType": "ranged",
+      "sizes": [
+        0.85,
+        1.25
+      ],
+      "evoFrom": null,
+      "evoTo": null,
+      "sprites": {
+        "idle": "",
+        "evo1": "",
+        "evo2": "",
+        "attack": "",
+        "hurt": ""
+      }
+    },
+    {
+      "id": 9,
+      "name": "炎靈",
+      "attr": "fire",
+      "rarity": 3,
+      "ivRange": 5,
+      "baseHP": 75,
+      "baseATK": 30,
+      "baseDEF": 14,
+      "baseAGI": 20,
+      "baseSPD": 22,
+      "knockback": 0,
+      "atkType": "ranged",
+      "sizes": [
+        1,
+        1.4
+      ],
+      "evoFrom": null,
+      "evoTo": null,
+      "sprites": {
+        "idle": "",
+        "evo1": "",
+        "evo2": "",
+        "attack": "",
+        "hurt": ""
+      }
+    },
+    {
+      "id": 10,
+      "name": "水滴",
+      "attr": "water",
+      "rarity": 1,
+      "ivRange": 5,
+      "baseHP": 48,
+      "baseATK": 11,
+      "baseDEF": 12,
+      "baseAGI": 12,
+      "baseSPD": 11,
+      "knockback": 0,
+      "atkType": "ranged",
+      "sizes": [
+        0.75,
+        1.15
+      ],
+      "evoFrom": null,
+      "evoTo": 11,
+      "sprites": {
+        "idle": "mon_10_idle.png",
+        "evo1": "",
+        "evo2": "",
+        "attack": "",
+        "hurt": "mon_10_hurt.png"
+      }
+    },
+    {
+      "id": 11,
+      "name": "泡泡魚",
+      "attr": "water",
+      "rarity": 2,
+      "ivRange": 5,
+      "baseHP": 68,
+      "baseATK": 17,
+      "baseDEF": 18,
+      "baseAGI": 14,
+      "baseSPD": 13,
+      "knockback": 0,
+      "atkType": "ranged",
+      "sizes": [
+        1,
+        1.4
+      ],
+      "evoFrom": 10,
+      "evoTo": 12,
+      "sprites": {
+        "idle": "",
+        "evo1": "",
+        "evo2": "",
+        "attack": "",
+        "hurt": ""
+      }
+    },
+    {
+      "id": 12,
+      "name": "深海龍",
+      "attr": "water",
+      "rarity": 4,
+      "ivRange": 5,
+      "baseHP": 100,
+      "baseATK": 30,
+      "baseDEF": 30,
+      "baseAGI": 16,
+      "baseSPD": 15,
+      "knockback": 0,
+      "atkType": "area",
+      "sizes": [
+        1.3,
+        1.8
+      ],
+      "evoFrom": 11,
+      "evoTo": null,
+      "sprites": {
+        "idle": "",
+        "evo1": "",
+        "evo2": "",
+        "attack": "",
+        "hurt": ""
+      }
+    },
+    {
+      "id": 13,
+      "name": "雨雲獸",
+      "attr": "water",
+      "rarity": 3,
+      "ivRange": 5,
+      "baseHP": 80,
+      "baseATK": 24,
+      "baseDEF": 20,
+      "baseAGI": 18,
+      "baseSPD": 16,
+      "knockback": 0,
+      "atkType": "ranged",
+      "sizes": [
+        1.1,
+        1.5
+      ],
+      "evoFrom": null,
+      "evoTo": null,
+      "sprites": {
+        "idle": "",
+        "evo1": "",
+        "evo2": "",
+        "attack": "",
+        "hurt": ""
+      }
+    },
+    {
+      "id": 14,
+      "name": "冰晶精",
+      "attr": "water",
+      "rarity": 3,
+      "ivRange": 5,
+      "baseHP": 72,
+      "baseATK": 26,
+      "baseDEF": 24,
+      "baseAGI": 12,
+      "baseSPD": 10,
+      "knockback": 0,
+      "atkType": "melee",
+      "sizes": [
+        0.95,
+        1.35
+      ],
+      "evoFrom": null,
+      "evoTo": null,
+      "sprites": {
+        "idle": "",
+        "evo1": "",
+        "evo2": "",
+        "attack": "",
+        "hurt": ""
+      }
+    },
+    {
+      "id": 15,
+      "name": "靜電毛",
+      "attr": "electric",
+      "rarity": 1,
+      "ivRange": 5,
+      "baseHP": 38,
+      "baseATK": 14,
+      "baseDEF": 7,
+      "baseAGI": 16,
+      "baseSPD": 18,
+      "knockback": 0,
+      "atkType": "ranged",
+      "sizes": [
+        0.7,
+        1.1
+      ],
+      "evoFrom": null,
+      "evoTo": 16,
+      "sprites": {
+        "idle": "",
+        "evo1": "",
+        "evo2": "",
+        "attack": "",
+        "hurt": ""
+      }
+    },
+    {
+      "id": 16,
+      "name": "閃光球",
+      "attr": "electric",
+      "rarity": 2,
+      "ivRange": 5,
+      "baseHP": 55,
+      "baseATK": 20,
+      "baseDEF": 11,
+      "baseAGI": 20,
+      "baseSPD": 22,
+      "knockback": 0,
+      "atkType": "ranged",
+      "sizes": [
+        0.9,
+        1.3
+      ],
+      "evoFrom": 15,
+      "evoTo": 17,
+      "sprites": {
+        "idle": "",
+        "evo1": "",
+        "evo2": "",
+        "attack": "",
+        "hurt": ""
+      }
+    },
+    {
+      "id": 17,
+      "name": "雷霆獸",
+      "attr": "electric",
+      "rarity": 4,
+      "ivRange": 5,
+      "baseHP": 85,
+      "baseATK": 36,
+      "baseDEF": 18,
+      "baseAGI": 24,
+      "baseSPD": 26,
+      "knockback": 0,
+      "atkType": "area",
+      "sizes": [
+        1.2,
+        1.6
+      ],
+      "evoFrom": 16,
+      "evoTo": null,
+      "sprites": {
+        "idle": "",
+        "evo1": "",
+        "evo2": "",
+        "attack": "",
+        "hurt": ""
+      }
+    },
+    {
+      "id": 18,
+      "name": "電磁球",
+      "attr": "electric",
+      "rarity": 2,
+      "ivRange": 5,
+      "baseHP": 48,
+      "baseATK": 18,
+      "baseDEF": 9,
+      "baseAGI": 22,
+      "baseSPD": 24,
+      "knockback": 0,
+      "atkType": "ranged",
+      "sizes": [
+        0.8,
+        1.2
+      ],
+      "evoFrom": null,
+      "evoTo": null,
+      "sprites": {
+        "idle": "",
+        "evo1": "",
+        "evo2": "",
+        "attack": "",
+        "hurt": ""
+      }
+    },
+    {
+      "id": 19,
+      "name": "雷鳴星",
+      "attr": "electric",
+      "rarity": 3,
+      "ivRange": 5,
+      "baseHP": 78,
+      "baseATK": 28,
+      "baseDEF": 15,
+      "baseAGI": 26,
+      "baseSPD": 28,
+      "knockback": 0,
+      "atkType": "ranged",
+      "sizes": [
+        1.05,
+        1.45
+      ],
+      "evoFrom": null,
+      "evoTo": null,
+      "sprites": {
+        "idle": "",
+        "evo1": "",
+        "evo2": "",
+        "attack": "",
+        "hurt": ""
+      }
+    },
+    {
+      "id": 20,
+      "name": "夢幻影",
+      "attr": "dark",
+      "rarity": 2,
+      "ivRange": 5,
+      "baseHP": 55,
+      "baseATK": 18,
+      "baseDEF": 13,
+      "baseAGI": 20,
+      "baseSPD": 16,
+      "knockback": 0,
+      "atkType": "melee",
+      "sizes": [
+        0.85,
+        1.25
+      ],
+      "evoFrom": null,
+      "evoTo": 21,
+      "sprites": {
+        "idle": "",
+        "evo1": "",
+        "evo2": "",
+        "attack": "",
+        "hurt": ""
+      }
+    },
+    {
+      "id": 21,
+      "name": "星塵精",
+      "attr": "dark",
+      "rarity": 3,
+      "ivRange": 5,
+      "baseHP": 75,
+      "baseATK": 26,
+      "baseDEF": 18,
+      "baseAGI": 24,
+      "baseSPD": 20,
+      "knockback": 0,
+      "atkType": "ranged",
+      "sizes": [
+        1.05,
+        1.45
+      ],
+      "evoFrom": 20,
+      "evoTo": 22,
+      "sprites": {
+        "idle": "",
+        "evo1": "",
+        "evo2": "",
+        "attack": "",
+        "hurt": ""
+      }
+    },
+    {
+      "id": 22,
+      "name": "虛空王",
+      "attr": "dark",
+      "rarity": 5,
+      "ivRange": 5,
+      "baseHP": 110,
+      "baseATK": 42,
+      "baseDEF": 24,
+      "baseAGI": 28,
+      "baseSPD": 22,
+      "knockback": 0,
+      "atkType": "area",
+      "sizes": [
+        1.4,
+        1.9
+      ],
+      "evoFrom": 21,
+      "evoTo": null,
+      "sprites": {
+        "idle": "",
+        "evo1": "",
+        "evo2": "",
+        "attack": "",
+        "hurt": ""
+      }
+    },
+    {
+      "id": 23,
+      "name": "黑洞仔",
+      "attr": "dark",
+      "rarity": 2,
+      "ivRange": 5,
+      "baseHP": 60,
+      "baseATK": 20,
+      "baseDEF": 16,
+      "baseAGI": 18,
+      "baseSPD": 14,
+      "knockback": 0,
+      "atkType": "melee",
+      "sizes": [
+        0.9,
+        1.3
+      ],
+      "evoFrom": null,
+      "evoTo": null,
+      "sprites": {
+        "idle": "",
+        "evo1": "",
+        "evo2": "",
+        "attack": "",
+        "hurt": ""
+      }
+    },
+    {
+      "id": 24,
+      "name": "暗影靈",
+      "attr": "dark",
+      "rarity": 4,
+      "ivRange": 5,
+      "baseHP": 88,
+      "baseATK": 34,
+      "baseDEF": 20,
+      "baseAGI": 30,
+      "baseSPD": 24,
+      "knockback": 0,
+      "atkType": "ranged",
+      "sizes": [
+        1.1,
+        1.5
+      ],
+      "evoFrom": null,
+      "evoTo": null,
+      "sprites": {
+        "idle": "",
+        "evo1": "",
+        "evo2": "",
+        "attack": "",
+        "hurt": ""
+      }
+    },
+    {
+      "id": 25,
+      "name": "晨曦",
+      "attr": "light",
+      "rarity": 2,
+      "ivRange": 5,
+      "baseHP": 58,
+      "baseATK": 16,
+      "baseDEF": 16,
+      "baseAGI": 14,
+      "baseSPD": 14,
+      "knockback": 0,
+      "atkType": "ranged",
+      "sizes": [
+        0.9,
+        1.3
+      ],
+      "evoFrom": null,
+      "evoTo": 26,
+      "sprites": {
+        "idle": "",
+        "evo1": "",
+        "evo2": "",
+        "attack": "",
+        "hurt": ""
+      }
+    },
+    {
+      "id": 26,
+      "name": "彩虹獸",
+      "attr": "light",
+      "rarity": 3,
+      "ivRange": 5,
+      "baseHP": 78,
+      "baseATK": 24,
+      "baseDEF": 22,
+      "baseAGI": 18,
+      "baseSPD": 18,
+      "knockback": 0,
+      "atkType": "area",
+      "sizes": [
+        1.1,
+        1.5
+      ],
+      "evoFrom": 25,
+      "evoTo": 27,
+      "sprites": {
+        "idle": "",
+        "evo1": "",
+        "evo2": "",
+        "attack": "",
+        "hurt": ""
+      }
+    },
+    {
+      "id": 27,
+      "name": "聖光精",
+      "attr": "light",
+      "rarity": 5,
+      "ivRange": 5,
+      "baseHP": 115,
+      "baseATK": 40,
+      "baseDEF": 35,
+      "baseAGI": 20,
+      "baseSPD": 20,
+      "knockback": 0,
+      "atkType": "area",
+      "sizes": [
+        1.4,
+        2
+      ],
+      "evoFrom": 26,
+      "evoTo": null,
+      "sprites": {
+        "idle": "",
+        "evo1": "",
+        "evo2": "",
+        "attack": "",
+        "hurt": ""
+      }
+    },
+    {
+      "id": 28,
+      "name": "光球",
+      "attr": "light",
+      "rarity": 1,
+      "ivRange": 5,
+      "baseHP": 42,
+      "baseATK": 12,
+      "baseDEF": 12,
+      "baseAGI": 16,
+      "baseSPD": 16,
+      "knockback": 0,
+      "atkType": "ranged",
+      "sizes": [
+        0.75,
+        1.15
+      ],
+      "evoFrom": null,
+      "evoTo": null,
+      "sprites": {
+        "idle": "",
+        "evo1": "",
+        "evo2": "",
+        "attack": "",
+        "hurt": ""
+      }
+    },
+    {
+      "id": 29,
+      "name": "神話龍",
+      "attr": "light",
+      "rarity": 5,
+      "ivRange": 5,
+      "baseHP": 130,
+      "baseATK": 45,
+      "baseDEF": 38,
+      "baseAGI": 22,
+      "baseSPD": 18,
+      "knockback": 0,
+      "atkType": "area",
+      "sizes": [
+        1.6,
+        2.2
+      ],
+      "evoFrom": null,
+      "evoTo": null,
+      "sprites": {
+        "idle": "",
+        "evo1": "",
+        "evo2": "",
+        "attack": "",
+        "hurt": ""
+      }
+    },
+    {
+      "id": 30,
+      "name": "蘑菇精",
+      "attr": "grass",
+      "rarity": 1,
+      "ivRange": 5,
+      "baseHP": 46,
+      "baseATK": 11,
+      "baseDEF": 13,
+      "baseAGI": 7,
+      "baseSPD": 9,
+      "knockback": 0,
+      "atkType": "melee",
+      "sizes": [
+        0.75,
+        1.15
+      ],
+      "evoFrom": null,
+      "evoTo": 31,
+      "sprites": {
+        "idle": "",
+        "evo1": "",
+        "evo2": "",
+        "attack": "",
+        "hurt": ""
+      }
+    },
+    {
+      "id": 31,
+      "name": "菇菇王",
+      "attr": "grass",
+      "rarity": 2,
+      "ivRange": 5,
+      "baseHP": 66,
+      "baseATK": 19,
+      "baseDEF": 17,
+      "baseAGI": 11,
+      "baseSPD": 13,
+      "knockback": 0,
+      "atkType": "melee",
+      "sizes": [
+        1,
+        1.4
+      ],
+      "evoFrom": 30,
+      "evoTo": 32,
+      "sprites": {
+        "idle": "",
+        "evo1": "",
+        "evo2": "",
+        "attack": "",
+        "hurt": ""
+      }
+    },
+    {
+      "id": 32,
+      "name": "古木神",
+      "attr": "grass",
+      "rarity": 4,
+      "ivRange": 5,
+      "baseHP": 98,
+      "baseATK": 33,
+      "baseDEF": 28,
+      "baseAGI": 13,
+      "baseSPD": 12,
+      "knockback": 0,
+      "atkType": "area",
+      "sizes": [
+        1.35,
+        1.8
+      ],
+      "evoFrom": 31,
+      "evoTo": null,
+      "sprites": {
+        "idle": "",
+        "evo1": "",
+        "evo2": "",
+        "attack": "",
+        "hurt": ""
+      }
+    },
+    {
+      "id": 33,
+      "name": "仙人掌兒",
+      "attr": "grass",
+      "rarity": 2,
+      "ivRange": 5,
+      "baseHP": 60,
+      "baseATK": 20,
+      "baseDEF": 20,
+      "baseAGI": 8,
+      "baseSPD": 8,
+      "knockback": 0,
+      "atkType": "ranged",
+      "sizes": [
+        0.9,
+        1.3
+      ],
+      "evoFrom": null,
+      "evoTo": null,
+      "sprites": {
+        "idle": "",
+        "evo1": "",
+        "evo2": "",
+        "attack": "",
+        "hurt": ""
+      }
+    },
+    {
+      "id": 34,
+      "name": "森林靈",
+      "attr": "grass",
+      "rarity": 3,
+      "ivRange": 5,
+      "baseHP": 76,
+      "baseATK": 25,
+      "baseDEF": 19,
+      "baseAGI": 19,
+      "baseSPD": 21,
+      "knockback": 0,
+      "atkType": "ranged",
+      "sizes": [
+        1,
+        1.4
+      ],
+      "evoFrom": null,
+      "evoTo": null,
+      "sprites": {
+        "idle": "",
+        "evo1": "",
+        "evo2": "",
+        "attack": "",
+        "hurt": ""
+      }
+    },
+    {
+      "id": 35,
+      "name": "煤炭妖",
+      "attr": "fire",
+      "rarity": 1,
+      "ivRange": 5,
+      "baseHP": 42,
+      "baseATK": 14,
+      "baseDEF": 9,
+      "baseAGI": 11,
+      "baseSPD": 11,
+      "knockback": 0,
+      "atkType": "melee",
+      "sizes": [
+        0.8,
+        1.2
+      ],
+      "evoFrom": null,
+      "evoTo": 36,
+      "sprites": {
+        "idle": "",
+        "evo1": "",
+        "evo2": "",
+        "attack": "",
+        "hurt": ""
+      }
+    },
+    {
+      "id": 36,
+      "name": "焰翼鳥",
+      "attr": "fire",
+      "rarity": 2,
+      "ivRange": 5,
+      "baseHP": 60,
+      "baseATK": 23,
+      "baseDEF": 13,
+      "baseAGI": 18,
+      "baseSPD": 20,
+      "knockback": 0,
+      "atkType": "ranged",
+      "sizes": [
+        1,
+        1.4
+      ],
+      "evoFrom": 35,
+      "evoTo": 37,
+      "sprites": {
+        "idle": "",
+        "evo1": "",
+        "evo2": "",
+        "attack": "",
+        "hurt": ""
+      }
+    },
+    {
+      "id": 37,
+      "name": "鳳凰王",
+      "attr": "fire",
+      "rarity": 5,
+      "ivRange": 5,
+      "baseHP": 118,
+      "baseATK": 43,
+      "baseDEF": 30,
+      "baseAGI": 26,
+      "baseSPD": 24,
+      "knockback": 0,
+      "atkType": "area",
+      "sizes": [
+        1.5,
+        2
+      ],
+      "evoFrom": 36,
+      "evoTo": null,
+      "sprites": {
+        "idle": "",
+        "evo1": "",
+        "evo2": "",
+        "attack": "",
+        "hurt": ""
+      }
+    },
+    {
+      "id": 38,
+      "name": "岩漿蛙",
+      "attr": "fire",
+      "rarity": 2,
+      "ivRange": 5,
+      "baseHP": 64,
+      "baseATK": 21,
+      "baseDEF": 16,
+      "baseAGI": 12,
+      "baseSPD": 10,
+      "knockback": 0,
+      "atkType": "melee",
+      "sizes": [
+        0.95,
+        1.35
+      ],
+      "evoFrom": null,
+      "evoTo": null,
+      "sprites": {
+        "idle": "",
+        "evo1": "",
+        "evo2": "",
+        "attack": "",
+        "hurt": ""
+      }
+    },
+    {
+      "id": 39,
+      "name": "烈焰狐",
+      "attr": "fire",
+      "rarity": 3,
+      "ivRange": 5,
+      "baseHP": 74,
+      "baseATK": 29,
+      "baseDEF": 15,
+      "baseAGI": 22,
+      "baseSPD": 23,
+      "knockback": 0,
+      "atkType": "melee",
+      "sizes": [
+        1.05,
+        1.45
+      ],
+      "evoFrom": null,
+      "evoTo": null,
+      "sprites": {
+        "idle": "",
+        "evo1": "",
+        "evo2": "",
+        "attack": "",
+        "hurt": ""
+      }
+    },
+    {
+      "id": 40,
+      "name": "小海獺",
+      "attr": "water",
+      "rarity": 1,
+      "ivRange": 5,
+      "baseHP": 50,
+      "baseATK": 10,
+      "baseDEF": 13,
+      "baseAGI": 13,
+      "baseSPD": 12,
+      "knockback": 0,
+      "atkType": "melee",
+      "sizes": [
+        0.75,
+        1.15
+      ],
+      "evoFrom": null,
+      "evoTo": 41,
+      "sprites": {
+        "idle": "",
+        "evo1": "",
+        "evo2": "",
+        "attack": "",
+        "hurt": ""
+      }
+    },
+    {
+      "id": 41,
+      "name": "海豚精",
+      "attr": "water",
+      "rarity": 2,
+      "ivRange": 5,
+      "baseHP": 70,
+      "baseATK": 18,
+      "baseDEF": 19,
+      "baseAGI": 17,
+      "baseSPD": 16,
+      "knockback": 0,
+      "atkType": "ranged",
+      "sizes": [
+        1,
+        1.4
+      ],
+      "evoFrom": 40,
+      "evoTo": 42,
+      "sprites": {
+        "idle": "",
+        "evo1": "",
+        "evo2": "",
+        "attack": "",
+        "hurt": ""
+      }
+    },
+    {
+      "id": 42,
+      "name": "巨鯨神",
+      "attr": "water",
+      "rarity": 4,
+      "ivRange": 5,
+      "baseHP": 105,
+      "baseATK": 32,
+      "baseDEF": 32,
+      "baseAGI": 14,
+      "baseSPD": 13,
+      "knockback": 0,
+      "atkType": "area",
+      "sizes": [
+        1.4,
+        1.9
+      ],
+      "evoFrom": 41,
+      "evoTo": null,
+      "sprites": {
+        "idle": "",
+        "evo1": "",
+        "evo2": "",
+        "attack": "",
+        "hurt": ""
+      }
+    },
+    {
+      "id": 43,
+      "name": "珊瑚精",
+      "attr": "water",
+      "rarity": 2,
+      "ivRange": 5,
+      "baseHP": 58,
+      "baseATK": 16,
+      "baseDEF": 22,
+      "baseAGI": 10,
+      "baseSPD": 9,
+      "knockback": 0,
+      "atkType": "ranged",
+      "sizes": [
+        0.9,
+        1.3
+      ],
+      "evoFrom": null,
+      "evoTo": null,
+      "sprites": {
+        "idle": "",
+        "evo1": "",
+        "evo2": "",
+        "attack": "",
+        "hurt": ""
+      }
+    },
+    {
+      "id": 44,
+      "name": "霜雪貂",
+      "attr": "water",
+      "rarity": 3,
+      "ivRange": 5,
+      "baseHP": 80,
+      "baseATK": 26,
+      "baseDEF": 22,
+      "baseAGI": 15,
+      "baseSPD": 14,
+      "knockback": 0,
+      "atkType": "melee",
+      "sizes": [
+        1,
+        1.4
+      ],
+      "evoFrom": null,
+      "evoTo": null,
+      "sprites": {
+        "idle": "",
+        "evo1": "",
+        "evo2": "",
+        "attack": "",
+        "hurt": ""
+      }
+    },
+    {
+      "id": 45,
+      "name": "電蟲",
+      "attr": "electric",
+      "rarity": 1,
+      "ivRange": 5,
+      "baseHP": 36,
+      "baseATK": 13,
+      "baseDEF": 6,
+      "baseAGI": 17,
+      "baseSPD": 19,
+      "knockback": 0,
+      "atkType": "ranged",
+      "sizes": [
+        0.7,
+        1.1
+      ],
+      "evoFrom": null,
+      "evoTo": 46,
+      "sprites": {
+        "idle": "",
+        "evo1": "",
+        "evo2": "",
+        "attack": "",
+        "hurt": ""
+      }
+    },
+    {
+      "id": 46,
+      "name": "閃電蜂",
+      "attr": "electric",
+      "rarity": 2,
+      "ivRange": 5,
+      "baseHP": 54,
+      "baseATK": 21,
+      "baseDEF": 12,
+      "baseAGI": 23,
+      "baseSPD": 25,
+      "knockback": 0,
+      "atkType": "ranged",
+      "sizes": [
+        0.9,
+        1.3
+      ],
+      "evoFrom": 45,
+      "evoTo": 47,
+      "sprites": {
+        "idle": "",
+        "evo1": "",
+        "evo2": "",
+        "attack": "",
+        "hurt": ""
+      }
+    },
+    {
+      "id": 47,
+      "name": "暴風龍",
+      "attr": "electric",
+      "rarity": 4,
+      "ivRange": 5,
+      "baseHP": 88,
+      "baseATK": 37,
+      "baseDEF": 19,
+      "baseAGI": 27,
+      "baseSPD": 28,
+      "knockback": 0,
+      "atkType": "area",
+      "sizes": [
+        1.25,
+        1.65
+      ],
+      "evoFrom": 46,
+      "evoTo": null,
+      "sprites": {
+        "idle": "",
+        "evo1": "",
+        "evo2": "",
+        "attack": "",
+        "hurt": ""
+      }
+    },
+    {
+      "id": 48,
+      "name": "磁力石",
+      "attr": "electric",
+      "rarity": 2,
+      "ivRange": 5,
+      "baseHP": 62,
+      "baseATK": 17,
+      "baseDEF": 18,
+      "baseAGI": 14,
+      "baseSPD": 12,
+      "knockback": 0,
+      "atkType": "melee",
+      "sizes": [
+        0.85,
+        1.25
+      ],
+      "evoFrom": null,
+      "evoTo": null,
+      "sprites": {
+        "idle": "",
+        "evo1": "",
+        "evo2": "",
+        "attack": "",
+        "hurt": ""
+      }
+    },
+    {
+      "id": 49,
+      "name": "電光蛇",
+      "attr": "electric",
+      "rarity": 3,
+      "ivRange": 5,
+      "baseHP": 72,
+      "baseATK": 27,
+      "baseDEF": 14,
+      "baseAGI": 28,
+      "baseSPD": 26,
+      "knockback": 0,
+      "atkType": "melee",
+      "sizes": [
+        1,
+        1.4
+      ],
+      "evoFrom": null,
+      "evoTo": null,
+      "sprites": {
+        "idle": "",
+        "evo1": "",
+        "evo2": "",
+        "attack": "",
+        "hurt": ""
+      }
+    },
+    {
+      "id": 50,
+      "name": "幽靈球",
+      "attr": "dark",
+      "rarity": 1,
+      "ivRange": 5,
+      "baseHP": 40,
+      "baseATK": 13,
+      "baseDEF": 10,
+      "baseAGI": 18,
+      "baseSPD": 15,
+      "knockback": 0,
+      "atkType": "melee",
+      "sizes": [
+        0.75,
+        1.15
+      ],
+      "evoFrom": null,
+      "evoTo": 51,
+      "sprites": {
+        "idle": "",
+        "evo1": "",
+        "evo2": "",
+        "attack": "",
+        "hurt": ""
+      }
+    },
+    {
+      "id": 51,
+      "name": "魂魄精",
+      "attr": "dark",
+      "rarity": 2,
+      "ivRange": 5,
+      "baseHP": 58,
+      "baseATK": 21,
+      "baseDEF": 15,
+      "baseAGI": 22,
+      "baseSPD": 18,
+      "knockback": 0,
+      "atkType": "ranged",
+      "sizes": [
+        1,
+        1.4
+      ],
+      "evoFrom": 50,
+      "evoTo": 52,
+      "sprites": {
+        "idle": "",
+        "evo1": "",
+        "evo2": "",
+        "attack": "",
+        "hurt": ""
+      }
+    },
+    {
+      "id": 52,
+      "name": "混沌獸",
+      "attr": "dark",
+      "rarity": 5,
+      "ivRange": 5,
+      "baseHP": 120,
+      "baseATK": 44,
+      "baseDEF": 26,
+      "baseAGI": 30,
+      "baseSPD": 25,
+      "knockback": 0,
+      "atkType": "area",
+      "sizes": [
+        1.45,
+        1.95
+      ],
+      "evoFrom": 51,
+      "evoTo": null,
+      "sprites": {
+        "idle": "",
+        "evo1": "",
+        "evo2": "",
+        "attack": "",
+        "hurt": ""
+      }
+    },
+    {
+      "id": 53,
+      "name": "詛咒娃娃",
+      "attr": "dark",
+      "rarity": 3,
+      "ivRange": 5,
+      "baseHP": 68,
+      "baseATK": 28,
+      "baseDEF": 17,
+      "baseAGI": 20,
+      "baseSPD": 16,
+      "knockback": 0,
+      "atkType": "melee",
+      "sizes": [
+        0.9,
+        1.3
+      ],
+      "evoFrom": null,
+      "evoTo": null,
+      "sprites": {
+        "idle": "",
+        "evo1": "",
+        "evo2": "",
+        "attack": "",
+        "hurt": ""
+      }
+    },
+    {
+      "id": 54,
+      "name": "暗炎貓",
+      "attr": "dark",
+      "rarity": 3,
+      "ivRange": 5,
+      "baseHP": 78,
+      "baseATK": 31,
+      "baseDEF": 16,
+      "baseAGI": 26,
+      "baseSPD": 22,
+      "knockback": 0,
+      "atkType": "ranged",
+      "sizes": [
+        1.05,
+        1.45
+      ],
+      "evoFrom": null,
+      "evoTo": null,
+      "sprites": {
+        "idle": "",
+        "evo1": "",
+        "evo2": "",
+        "attack": "",
+        "hurt": ""
+      }
+    },
+    {
+      "id": 55,
+      "name": "星光精",
+      "attr": "light",
+      "rarity": 1,
+      "ivRange": 5,
+      "baseHP": 44,
+      "baseATK": 12,
+      "baseDEF": 11,
+      "baseAGI": 15,
+      "baseSPD": 15,
+      "knockback": 0,
+      "atkType": "ranged",
+      "sizes": [
+        0.75,
+        1.15
+      ],
+      "evoFrom": null,
+      "evoTo": 56,
+      "sprites": {
+        "idle": "",
+        "evo1": "",
+        "evo2": "",
+        "attack": "",
+        "hurt": ""
+      }
+    },
+    {
+      "id": 56,
+      "name": "月光獸",
+      "attr": "light",
+      "rarity": 2,
+      "ivRange": 5,
+      "baseHP": 64,
+      "baseATK": 20,
+      "baseDEF": 20,
+      "baseAGI": 19,
+      "baseSPD": 19,
+      "knockback": 0,
+      "atkType": "ranged",
+      "sizes": [
+        1,
+        1.4
+      ],
+      "evoFrom": 55,
+      "evoTo": 57,
+      "sprites": {
+        "idle": "",
+        "evo1": "",
+        "evo2": "",
+        "attack": "",
+        "hurt": ""
+      }
+    },
+    {
+      "id": 57,
+      "name": "太陽神",
+      "attr": "light",
+      "rarity": 5,
+      "ivRange": 5,
+      "baseHP": 125,
+      "baseATK": 44,
+      "baseDEF": 36,
+      "baseAGI": 24,
+      "baseSPD": 21,
+      "knockback": 0,
+      "atkType": "area",
+      "sizes": [
+        1.5,
+        2
+      ],
+      "evoFrom": 56,
+      "evoTo": null,
+      "sprites": {
+        "idle": "",
+        "evo1": "",
+        "evo2": "",
+        "attack": "",
+        "hurt": ""
+      }
+    },
+    {
+      "id": 58,
+      "name": "雲朵精",
+      "attr": "light",
+      "rarity": 2,
+      "ivRange": 5,
+      "baseHP": 56,
+      "baseATK": 15,
+      "baseDEF": 17,
+      "baseAGI": 17,
+      "baseSPD": 17,
+      "knockback": 0,
+      "atkType": "ranged",
+      "sizes": [
+        0.9,
+        1.3
+      ],
+      "evoFrom": null,
+      "evoTo": null,
+      "sprites": {
+        "idle": "",
+        "evo1": "",
+        "evo2": "",
+        "attack": "",
+        "hurt": ""
+      }
+    },
+    {
+      "id": 59,
+      "name": "聖翼獸",
+      "attr": "light",
+      "rarity": 4,
+      "ivRange": 5,
+      "baseHP": 92,
+      "baseATK": 35,
+      "baseDEF": 32,
+      "baseAGI": 22,
+      "baseSPD": 20,
+      "knockback": 0,
+      "atkType": "area",
+      "sizes": [
+        1.2,
+        1.6
+      ],
+      "evoFrom": null,
+      "evoTo": null,
+      "sprites": {
+        "idle": "",
+        "evo1": "",
+        "evo2": "",
+        "attack": "",
+        "hurt": ""
+      }
+    }
+  ],
+  "battleConfig": {
+    "critChance": 0.1,
+    "critMultiplier": 1.5,
+    "advMultiplier": 1.5,
+    "areaSpashRatio": 0.5,
+    "maxAGIDodge": 0.4,
+    "defDampeningRatio": 0.4,
+    "expBase": 20,
+    "battleCooldown": 120,
+    "shinyChance": 0.01,
+    "shinyDrugChance": 0.03,
+    "breedDuration": 30
+  },
+  "skillConfig": {
+    "innate": {
+      "fire_innate_1": {
+        "burnChance": 0.5
+      },
+      "fire_innate_2": {
+        "burnChance": 0.3
+      },
+      "water_innate_1": {
+        "wetChance": 0.25
+      },
+      "water_innate_2": {
+        "hpThreshold": 0.5,
+        "defMulti": 2,
+        "duration": 5
+      },
+      "water_innate_3": {
+        "intervalSec": 10
+      },
+      "grass_innate_3": {
+        "paralyzeDuration": 3
+      },
+      "electric_innate_2": {
+        "paralyzeChance": 0.2,
+        "paralyzeDuration": 1
+      },
+      "electric_innate_3": {
+        "triggerCount": 4
+      },
+      "earth_innate_1": {
+        "defMulti": 1.5,
+        "spdReduction": 0.2
+      },
+      "earth_innate_2": {
+        "counterChance": 0.2
+      },
+      "light_innate_1": {
+        "duration": 5
+      },
+      "light_innate_2": {
+        "regenChance": 0.3
+      },
+      "dark_innate_1": {
+        "fearChance": 0.1,
+        "fearDuration": 2
+      },
+      "dark_innate_2": {
+        "healPercent": 0.2
+      }
+    },
+    "free": {
+      "fire_free_1": {
+        "triggerCount": 3
+      },
+      "fire_free_2": {
+        "triggerCount": 4,
+        "atkMulti": 0.5,
+        "burnStacks": 1
+      },
+      "fire_free_3": {
+        "intervalSec": 3,
+        "maxHpPercent": 0.02,
+        "levelFloor": 2
+      },
+      "fire_free_4": {
+        "atkBonusPerStack": 0.05,
+        "minBonus": 1
+      },
+      "fire_free_5": {
+        "hpThreshold": 0.2,
+        "intervalMulti": 0.5
+      },
+      "water_free_1": {
+        "triggerCount": 4,
+        "atkMulti": 0.8,
+        "freezeDuration": 1.5
+      },
+      "water_free_2": {
+        "triggerCount": 3,
+        "defMulti": 2,
+        "duration": 2
+      },
+      "water_free_3": {
+        "intervalSec": 4,
+        "atkMulti": 0.5,
+        "freezeStackMulti": 10
+      },
+      "water_free_4": {
+        "wetTriggerChance": 0.2
+      },
+      "water_free_5": {
+        "spreadChance": 0.3
+      },
+      "grass_free_1": {
+        "triggerCount": 3,
+        "atkMulti": 0.3,
+        "poisonStacks": 2
+      },
+      "grass_free_2": {
+        "triggerCount": 2,
+        "thornsGain": 5
+      },
+      "grass_free_3": {
+        "intervalSec": 5,
+        "maxHpPercent": 0.05,
+        "poisonStackMulti": 5,
+        "levelFloor": 2
+      },
+      "grass_free_4": {
+        "dmgBonus": 0.4,
+        "minBonus": 5
+      },
+      "grass_free_5": {
+        "defReduction": 0.1,
+        "minReduction": 2
+      },
+      "electric_free_1": {
+        "triggerCount": 2,
+        "chainMulti": 0.3
+      },
+      "electric_free_2": {
+        "triggerCount": 4,
+        "atkMulti": 0.4,
+        "paralyzeDuration": 2
+      },
+      "electric_free_3": {
+        "intervalSec": 3,
+        "stackMulti": 15,
+        "chainCount": 2
+      },
+      "electric_free_4": {
+        "resetChance": 0.15
+      },
+      "electric_free_5": {
+        "immuneChance": 0.25
+      },
+      "dark_free_1": {
+        "triggerCount": 3,
+        "atkMulti": 1.2,
+        "fearDuration": 1
+      },
+      "dark_free_2": {
+        "triggerCount": 3,
+        "atkMulti": 0.6,
+        "poisonStacks": 1
+      },
+      "dark_free_3": {
+        "intervalSec": 4,
+        "lostHpPercent": 0.15,
+        "levelFloor": 5
+      },
+      "dark_free_4": {},
+      "dark_free_5": {
+        "regenPercent": 0.1,
+        "regenDuration": 1
+      },
+      "light_free_1": {
+        "triggerCount": 4,
+        "atkMulti": 0.5
+      },
+      "light_free_2": {
+        "triggerCount": 5,
+        "defMulti": 2,
+        "duration": 3
+      },
+      "light_free_3": {
+        "intervalSec": 6,
+        "atkMulti": 2,
+        "debuffMulti": 1.5
+      },
+      "light_free_4": {
+        "defIgnorePercent": 0.3
+      },
+      "light_free_5": {
+        "shieldPercent": 0.2
+      }
+    },
+    "status": {
+      "brave": {
+        "atkMulti": 1.5,
+        "defMulti": 1.5,
+        "duration": 5
+      },
+      "endure": {
+        "defMulti": 2,
+        "duration": 5
+      },
+      "frenzy": {
+        "dmgMulti": 2
+      },
+      "regen": {
+        "totalHpPercent": 0.5,
+        "duration": 5
+      },
+      "aroused": {
+        "counterChance": 0.2,
+        "counterMulti": 0.8
+      },
+      "conductive": {
+        "chainMulti": 0.3
+      },
+      "burn": {
+        "durationSec": 5
+      },
+      "freeze": {
+        "triggerStacks": 5,
+        "stunDuration": 3
+      },
+      "paralyze": {
+        "missChance": 0.2
+      },
+      "fear": {
+        "duration": 2
+      },
+      "poison": {
+        "maxHpPercentPerStack": 0.01,
+        "minDmgPerStack": 1,
+        "maxStacks": 10,
+        "healReduction": 0.5
+      }
+    },
+    "system": {
+      "awakeningChance": 0.3,
+      "breedInheritChanceA": 0.3,
+      "breedInheritChanceB": 0.3,
+      "breedRandomChance": 0.2,
+      "freeSlotFillChance": 0.5
+    }
+  },
+  "shopConfig": [
+    {
+      "id": "food",
+      "name": "飼養食物",
+      "desc": "餵食怪物，增加EXP & 飽食度",
+      "price": 20,
+      "icon": "🍬",
+      "type": "consumable",
+      "effect": "feed",
+      "expGain": 50,
+      "key": "food"
+    },
+    {
+      "id": "potion",
+      "name": "體力回復劑",
+      "desc": "解除心情低落CD",
+      "price": 50,
+      "icon": "💊",
+      "type": "consumable",
+      "effect": "heal",
+      "key": "potion"
+    },
+    {
+      "id": "specialEgg",
+      "name": "特殊怪物蛋",
+      "desc": "孵化隨機稀有怪物",
+      "price": 200,
+      "icon": "🥚",
+      "type": "egg",
+      "effect": "hatch",
+      "key": "specialEgg"
+    },
+    {
+      "id": "drug",
+      "name": "幻想藥",
+      "desc": "配種色違機率提升至3%",
+      "price": 150,
+      "icon": "🔮",
+      "type": "special",
+      "effect": "shiny_boost",
+      "key": "drug"
+    }
+  ],
+  "musicConfig": {
+    "default": {
+      "file": "backgroundmusicforvideos-roblox-minecraft-fortnite-video-game-music-358426.mp3",
+      "label": "預設背景音樂",
+      "volume": 0.35
+    },
+    "terrarium": {
+      "file": "terrarium.mp3",
+      "label": "飼養箱音樂",
+      "volume": 0.35
+    },
+    "battle": {
+      "file": "battle.mp3",
+      "label": "戰鬥音樂",
+      "volume": 0.45
+    },
+    "ambient": {
+      "file": "ambient.mp3",
+      "label": "其他頁面音樂",
+      "volume": 0.3
+    }
+  },
+  "sfxConfig": {
+    "click": {
+      "file": "",
+      "label": "點擊音效"
+    },
+    "feed": {
+      "file": "",
+      "label": "餵食音效"
+    },
+    "levelUp": {
+      "file": "",
+      "label": "升級音效"
+    },
+    "evolve": {
+      "file": "",
+      "label": "進化音效"
+    },
+    "hatch": {
+      "file": "",
+      "label": "孵化音效"
+    },
+    "shiny": {
+      "file": "",
+      "label": "色違音效"
+    },
+    "buy": {
+      "file": "",
+      "label": "購買音效"
+    },
+    "battleStart": {
+      "file": "",
+      "label": "戰鬥開始音效"
+    },
+    "hit": {
+      "file": "",
+      "label": "命中音效"
+    },
+    "critHit": {
+      "file": "",
+      "label": "暴擊音效"
+    },
+    "miss": {
+      "file": "",
+      "label": "閃避音效"
+    },
+    "death": {
+      "file": "",
+      "label": "擊倒音效"
+    },
+    "win": {
+      "file": "",
+      "label": "勝利音效"
+    },
+    "lose": {
+      "file": "",
+      "label": "失敗音效"
+    }
+  },
+  "sceneConfig": {
+    "terrarium": {
+      "bgFile": "background.png",
+      "tileSize": 512,
+      "label": "飼養箱背景"
+    },
+    "battle": {
+      "bgFile": "",
+      "tileSize": 512,
+      "label": "戰鬥場景背景"
+    },
+    "warehouse": {
+      "bgFile": "",
+      "tileSize": 512,
+      "label": "倉庫背景"
+    },
+    "shop": {
+      "bgFile": "",
+      "tileSize": 512,
+      "label": "商店背景"
+    },
+    "breeding": {
+      "bgFile": "",
+      "tileSize": 512,
+      "label": "育種室背景"
+    },
+    "pokedex": {
+      "bgFile": "",
+      "tileSize": 512,
+      "label": "圖鑑背景"
+    }
+  },
+  "uiConfig": {
+    "logo": {
+      "file": "",
+      "label": "遊戲 LOGO"
+    },
+    "btnPrimary": {
+      "file": "",
+      "label": "主要按鈕背景"
+    },
+    "cardBg": {
+      "file": "",
+      "label": "卡片背景"
+    },
+    "navBg": {
+      "file": "",
+      "label": "側邊欄背景"
+    },
+    "headerBg": {
+      "file": "",
+      "label": "頂部列背景"
+    },
+    "emptyEgg": {
+      "file": "",
+      "label": "空蛋圖示"
+    },
+    "shinyStar": {
+      "file": "",
+      "label": "色違星星圖示"
+    }
+  },
+  "expTable": [
+    0,
+    0,
+    100,
+    250,
+    450,
+    700,
+    1000,
+    1350,
+    1750,
+    2200,
+    2700,
+    3300,
+    4000,
+    4800,
+    5700,
+    6700,
+    7800,
+    9000,
+    10300,
+    11700,
+    13200,
+    14800,
+    16500,
+    18300,
+    21200,
+    24200,
+    27200,
+    30200,
+    33200,
+    36200,
+    40000
+  ],
+  "savedAt": 1773890907668
+}
