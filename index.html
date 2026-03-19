@@ -339,7 +339,12 @@ async function doGoogleSignIn(){
     const provider=new firebase.auth.GoogleAuthProvider();
     await fbAuth.signInWithPopup(provider);
     closeModal();notify('✅ Google 登入成功！','teal');
-  }catch(e){notify('Google 登入失敗：'+_fbErrMsg(e.code),'warn');}
+  }catch(e){
+    const msg=_fbErrMsg(e.code)||e.code;
+    const errEl=document.getElementById('auth-err');
+    if(errEl)errEl.textContent='Google 登入失敗：'+msg;
+    else notify('Google 登入失敗：'+msg,'warn');
+  }
 }
 async function doSignIn(){
   const email=document.getElementById('auth-email').value.trim();
@@ -355,7 +360,7 @@ async function doSignUp(){
 }
 async function doSignOut(){await fbAuth.signOut();closeModal();notify('已登出','teal');}
 function _fbErrMsg(code){
-  const m={'auth/email-already-in-use':'此 Email 已被註冊','auth/invalid-email':'Email 格式錯誤','auth/wrong-password':'密碼錯誤','auth/user-not-found':'找不到此帳號','auth/weak-password':'密碼至少需要 6 位','auth/invalid-credential':'帳號或密碼錯誤','auth/popup-closed-by-user':'視窗被關閉','auth/cancelled-popup-request':''};
+  const m={'auth/email-already-in-use':'此 Email 已被註冊','auth/invalid-email':'Email 格式錯誤','auth/wrong-password':'密碼錯誤','auth/user-not-found':'找不到此帳號','auth/weak-password':'密碼至少需要 6 位','auth/invalid-credential':'帳號或密碼錯誤','auth/popup-closed-by-user':'視窗被關閉','auth/cancelled-popup-request':'','auth/unauthorized-domain':'此網域未授權，請至 Firebase Console → Authentication → Authorized domains 加入 jhaoyu1201.github.io'};
   return m[code]||code;
 }
 </script>
