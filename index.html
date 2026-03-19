@@ -504,11 +504,13 @@ function getSpritePath(sp, stage, blink, hurt, attacking) {
   const f=sf(sp,'idle');
   return f?dir+f:null;
 }
-// 取得色違專屬圖路徑（命名規則：mon_XX_idle_shiny.png）
-function getShinySpritePath(sp){
+// 取得色違專屬圖路徑（variant: 1→_shiny.png, 2→_shiny2.png, 3→_shiny3.png）
+function getShinySpritePath(sp,variant){
   if(!sp)return null;
   const dir=ASSET_CONFIG.monsterDir||'assets/monsters/';
-  const file=(sp.sprites&&sp.sprites['idleShiny'])||`mon_${String(sp.id).padStart(2,'0')}_idle_shiny.png`;
+  const v=variant||1;
+  const suffix=v===1?'_shiny':`_shiny${v}`;
+  const file=`mon_${String(sp.id).padStart(2,'0')}_idle${suffix}.png`;
   return dir+file;
 }
 // Preload a monster's sprites（含進化鏈）
@@ -630,9 +632,12 @@ function drawMonsterOnCanvas(ctx,m,x,y,scale,blink,mood,flipX){
     const drawPath=(spritePath&&IMG_CACHE[spritePath])?spritePath:spritePathIdle;
     const sz=s*2;
     // 色違圖檢查
-    const shinyPath=isShiny?getShinySpritePath(sp):null;
+    const shinyPath=isShiny?getShinySpritePath(sp,m.shinyVariant):null;
+    const shinyPathFallback=isShiny&&(m.shinyVariant||1)>1?getShinySpritePath(sp,1):null;
     if(shinyPath&&IMG_CACHE[shinyPath]===undefined)loadImg(shinyPath,()=>{});
-    const useShinySprite=isShiny&&shinyPath&&IMG_CACHE[shinyPath];
+    if(shinyPathFallback&&IMG_CACHE[shinyPathFallback]===undefined)loadImg(shinyPathFallback,()=>{});
+    const resolvedShinyPath=(isShiny&&shinyPath&&IMG_CACHE[shinyPath])?shinyPath:(isShiny&&shinyPathFallback&&IMG_CACHE[shinyPathFallback])?shinyPathFallback:null;
+    const useShinySprite=!!resolvedShinyPath;
     ctx.save();
     if(flipX)ctx.scale(-1,1);
     if(isShiny&&!useShinySprite){
@@ -640,7 +645,7 @@ function drawMonsterOnCanvas(ctx,m,x,y,scale,blink,mood,flipX){
       if(CTX_FILTER_SUPPORT){ctx.filter=`hue-rotate(${hue}deg) saturate(1.5)`;}
       else{ctx.shadowColor=`hsl(${hue},90%,60%)`;ctx.shadowBlur=16;}
     }
-    ctx.drawImage(useShinySprite?IMG_CACHE[shinyPath]:IMG_CACHE[drawPath],-sz/2,-sz+s*0.95,sz,sz);
+    ctx.drawImage(useShinySprite?IMG_CACHE[resolvedShinyPath]:IMG_CACHE[drawPath],-sz/2,-sz+s*0.95,sz,sz);
     ctx.filter='none';ctx.shadowBlur=0;
     ctx.restore();
     if(spritePath&&spritePath!==spritePathIdle&&IMG_CACHE[spritePath]===undefined)loadImg(spritePath,()=>{});
@@ -1819,18 +1824,16 @@ function drawMiniMonsterFull(m,canvas){
   }
   if(spritePath){
     if(m.isShiny){
-      // 先嘗試載入專屬色違圖
-      const shinyPath=getShinySpritePath(sp);
+      // 先嘗試載入專屬色違圖（含 variant fallback）
+      const shinyPath=getShinySpritePath(sp,m.shinyVariant);
+      const shinyFallback=(m.shinyVariant||1)>1?getShinySpritePath(sp,1):null;
       loadImg(shinyPath,(shinyImg)=>{
-        if(shinyImg){
-          canvas.style.filter=''; // 有色違圖：直接用，不加濾鏡
-          _drawImg(shinyImg);
-        }else{
-          // 無色違圖：套 hue-rotate 濾鏡
-          const hue=sp.shinyHue??ATTR_SHINY_HUE[sp.attr]??180;
-          canvas.style.filter=`hue-rotate(${hue}deg) saturate(1.5)`;
-          loadImg(spritePath,_drawImg);
-        }
+        const tryFallback=()=>{
+          if(shinyFallback){loadImg(shinyFallback,(fbImg)=>{if(fbImg){canvas.style.filter='';_drawImg(fbImg);}else{const hue=sp.shinyHue??ATTR_SHINY_HUE[sp.attr]??180;canvas.style.filter=`hue-rotate(${hue}deg) saturate(1.5)`;loadImg(spritePath,_drawImg);}});}
+          else{const hue=sp.shinyHue??ATTR_SHINY_HUE[sp.attr]??180;canvas.style.filter=`hue-rotate(${hue}deg) saturate(1.5)`;loadImg(spritePath,_drawImg);}
+        };
+        if(shinyImg){canvas.style.filter='';_drawImg(shinyImg);}
+        else{tryFallback();}
       });
     }else{
       loadImg(spritePath,_drawImg);
@@ -1870,7 +1873,8 @@ function generateMonster(spId,level=1,isShiny=false,pA=null,pB=null){
     const inherit=(pAv,pBv)=>Math.max(-iv,Math.min(iv,Math.round((Math.random()<0.5?pAv:pBv)+randIV()*0.5)));
     ivHP=inherit(pA.ivHP,pB.ivHP);ivATK=inherit(pA.ivATK,pB.ivATK);ivDEF=inherit(pA.ivDEF,pB.ivDEF);ivAGI=inherit(pA.ivAGI,pB.ivAGI);ivSPD=inherit(pA.ivSPD,pB.ivSPD);
   }
-  const m={uid:G.nextId++,speciesId:spId,name:sp.name+(shiny?'✨':''),nickname:'',level,exp:EXP_TABLE[level]||0,isShiny:shiny,size,ivHP,ivATK,ivDEF,ivAGI,ivSPD,hp:0,maxHP:0,mood:'happy',hunger:100,lastFed:Date.now(),passiveInnate:null,passiveFreeA:null,passiveFreeB:null};
+  const shinyVariant=shiny?Math.floor(Math.random()*(sp.shinyVariants||1))+1:undefined;
+  const m={uid:G.nextId++,speciesId:spId,name:sp.name+(shiny?'✨':''),nickname:'',level,exp:EXP_TABLE[level]||0,isShiny:shiny,shinyVariant,size,ivHP,ivATK,ivDEF,ivAGI,ivSPD,hp:0,maxHP:0,mood:'happy',hunger:100,lastFed:Date.now(),passiveInnate:null,passiveFreeA:null,passiveFreeB:null};
   m.maxHP=calcStat('HP',m);m.hp=m.maxHP;
   if(typeof initPassiveSlots==='function') initPassiveSlots(m,pA,pB);
   G.discovered.add(spId);
