@@ -193,6 +193,8 @@ hr{border:none;border-top:1px solid var(--card2);margin:14px 0;}
       <div style="flex:1"></div>
       <button class="nav-btn" onclick="closeModal();setTimeout(redeemCode,100)" id="nav-redeem"><span class="icon">🎁</span>兌換碼</button>
       <button class="nav-btn" onclick="showSaveMenu()"><span class="icon">💾</span>存檔</button>
+      <button class="nav-btn" id="nav-logout" style="display:none;" onclick="doLogout()"><span class="icon">🚪</span>登出</button>
+      <button class="nav-btn" onclick="doQuitGame()" style="color:#ff6b6b;"><span class="icon">⏻</span>退出遊戲</button>
       <button class="nav-btn dev-mode-toggle" id="dev-mode-btn" onclick="toggleDevMode()" title="開發者模式"><span class="icon">🛠</span>開發</button>
     </div>
     <div id="content">
@@ -273,6 +275,8 @@ const fbAuth=firebase.auth();
 const fbDb=firebase.firestore();
 
 fbAuth.onAuthStateChanged(async user=>{
+  const logoutBtn=document.getElementById('nav-logout');
+  if(logoutBtn)logoutBtn.style.display=user?'':'none';
   if(user){
     try{
       const doc=await fbDb.collection('saves').doc(user.uid).get();
@@ -359,6 +363,19 @@ async function doSignUp(){
   catch(e){document.getElementById('auth-err').textContent=_fbErrMsg(e.code);}
 }
 async function doSignOut(){await fbAuth.signOut();closeModal();notify('已登出','teal');}
+async function doLogout(){
+  if(!confirm('確定登出？將自動同步存檔到雲端。'))return;
+  await cloudSave();
+  await fbAuth.signOut();
+  notify('🚪 已儲存並登出','teal');
+}
+async function doQuitGame(){
+  if(!confirm('確定退出遊戲？將自動儲存進度。'))return;
+  await smartSave();
+  window.close();
+  // 若瀏覽器不允許 close()，顯示提示
+  setTimeout(()=>notify('✅ 已儲存！請手動關閉視窗。','teal'),300);
+}
 function _fbErrMsg(code){
   const m={'auth/email-already-in-use':'此 Email 已被註冊','auth/invalid-email':'Email 格式錯誤','auth/wrong-password':'密碼錯誤','auth/user-not-found':'找不到此帳號','auth/weak-password':'密碼至少需要 6 位','auth/invalid-credential':'帳號或密碼錯誤','auth/popup-closed-by-user':'視窗被關閉','auth/cancelled-popup-request':'','auth/unauthorized-domain':'此網域未授權，請至 Firebase Console → Authentication → Authorized domains 加入 jhaoyu1201.github.io'};
   return m[code]||code;
